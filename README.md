@@ -1,5 +1,8 @@
 # 🌾 KrishiMitra – Smart Crop Advisory System
 
+<img width="1891" height="500" alt="image" src="https://github.com/user-attachments/assets/a3627d30-a156-4693-b875-7955853468b1" />
+
+
 **KrishiMitra** is a smart agriculture platform designed to help farmers make informed crop decisions using **Machine Learning** and **real-time weather data**.  
 The system features a clean dashboard for easy navigation and uses a **Random Forest algorithm** to predict the most suitable crop based on soil and climate parameters entered by the user.
 
@@ -60,6 +63,7 @@ Or visit the hosted version:
 
 
 
+<img width="1736" height="954" alt="Screenshot 2025-11-26 123003" src="https://github.com/user-attachments/assets/75833826-7185-4974-9828-5142f4b1629a" />
 
 
 
