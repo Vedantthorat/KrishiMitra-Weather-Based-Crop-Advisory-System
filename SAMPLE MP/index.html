@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KrishiMitra — Weather-Based Crop Advisory System</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-site-gray text-dark">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
+        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+                <img src="logo.jpg" class="h-14 rounded shadow-sm">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-accent-green">KrishiMitra</h2>
+                    <p class="text-muted text-sm">Weather-Based Crop Advisory System</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <select id="langSelect" class="form-select form-select-sm w-36">
+                    <option value="en">English</option>
+                    <option value="mr">मराठी</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+
+                <button id="themeToggle" class="btn btn-outline-secondary btn-sm">
+                    <span id="themeIcon">🌙</span>
+                </button>
+
+                <button id="openAdvisoryHeader" class="btn btn-success btn-sm">Open Advisory</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- FULL-PAGE SLIDESHOW (NEW TOP HERO) -->
+    <div id="heroSlideshow">
+        <img src="weather1.jpg" class="hero-slide active">
+        <img src="weather2.jpg" class="hero-slide">
+        <img src="weather3.jpg" class="hero-slide">
+        <img src="weather4.jpg" class="hero-slide">
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container mx-auto px-4 py-8">
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- LEFT PANEL -->
+            <div class="rounded-2xl p-8 bg-white shadow-md">
+                <h1 id="heroTitle" class="text-3xl font-extrabold text-accent-green"></h1>
+                <p id="heroSub" class="mt-3 text-muted"></p>
+
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button id="openAdvisoryBtn" class="btn btn-success shadow"></button>
+                    <button id="downloadGuide" class="btn btn-outline-secondary">Download Guide</button>
+                    <a href="mailto:vedantthorat200@gmail.com" class="btn btn-outline-warning">Contact</a>
+                </div>
+
+                <h3 class="text-lg font-semibold mt-8">Features</h3>
+                <ul class="list-disc list-inside mt-3 text-muted">
+                    <li>Weather-based crop recommendations</li>
+                    <li>Soil guidance & farming calendar</li>
+                    <li>Predict Crop ML Model</li>
+                    <li>Simple multilingual interface</li>
+                </ul>
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <aside class="rounded-2xl p-6 bg-white shadow-md flex flex-col gap-4">
+
+                <div class="flex flex-col items-center gap-3">
+                    <img src="predict_crop_logo.jpg" class="h-20 rounded shadow-sm">
+                    <button id="predictCropBtn" class="btn btn-success w-full sm:w-3/4">
+                        Predict Crop Now
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between p-3 rounded-lg bg-muted-ghost border">
+                    <div>
+                        <p class="text-muted text-sm">Location</p>
+                        <p id="locationName" class="font-bold text-accent-green">--</p>
+                    </div>
+
+                    <div class="text-right">
+                        <h3 id="tempDisplay" class="text-2xl font-extrabold">--°C</h3>
+                        <p id="weatherDesc" class="text-muted text-sm">--</p>
+                        <img id="weatherIcon" class="h-10 mt-1" />
+                    </div>
+                </div>
+
+                <div id="forecastSection" class="rounded-lg p-3 bg-muted-ghost border">
+                    <h4 class="text-accent-green font-bold mb-2">3-Day Forecast</h4>
+                    <div id="forecastList" class="space-y-2 text-sm text-muted"></div>
+                </div>
+
+                <!-- Slideshow removed from here -->
+
+                <div class="flex gap-2">
+                    <button id="openInNewTab" class="btn btn-outline-secondary">Open in new tab</button>
+                    <button id="viewSoilBtn" class="btn btn-outline-success">View Soil Info</button>
+                </div>
+            </aside>
+
+        </section>
+
+        <!-- SOIL / CALENDAR / RESOURCES -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div id="soilCard" class="rounded-xl bg-site-light p-5 border">
+                <h4 class="text-accent-green font-bold">Soil Information</h4>
+                <p class="text-muted text-sm mt-1">Select your soil type.</p>
+                <select id="soilZone" class="form-select mt-3">
+                    <option value="black">Black Cotton Soil</option>
+                    <option value="lateritic">Lateritic Soil</option>
+                    <option value="alluvial">Alluvial Soil</option>
+                    <option value="red">Red Soil</option>
+                </select>
+                <div id="soilOutput" class="mt-3 text-muted text-sm"></div>
+            </div>
+
+            <div id="calendarCard" class="rounded-xl bg-site-light p-5 border">
+                <h4 class="text-accent-green font-bold">Farming Calendar</h4>
+                <div id="calendarList" class="mt-3 text-muted text-sm"></div>
+            </div>
+
+            <div id="resourcesCard" class="rounded-xl bg-site-light p-5 border">
+                <h4 class="text-accent-green font-bold">Resources & Guides</h4>
+                <ul class="list-disc list-inside mt-3 text-muted text-sm">
+                    <li>Drip irrigation setup</li>
+                    <li>Organic pest control</li>
+                    <li>Seed selection tips</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-footer-green mt-10">
+
+        <div class="container mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+            <div>
+                <h4 class="font-bold text-lg mb-3 text-white">Contact Us</h4>
+                <p class="flex items-center gap-2">
+                    <i class="bi bi-envelope-fill"></i>
+                    <a href="mailto:vedantthorat200@gmail.com" class="text-white/85 hover:text-accent-green">
+                        vedantthorat200@gmail.com
+                    </a>
+                </p>
+                <p class="flex items-center gap-2 mt-2">
+                    <i class="bi bi-telephone-fill"></i>
+                    <a href="tel:+91917503645" class="text-white/85 hover:text-accent-green">
+                        +91 917503645
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-3 text-white">Follow Us</h4>
+                <div class="flex gap-5">
+                    <a href="https://instagram.com/" target="_blank" class="social-icon hover:text-accent-green">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://facebook.com/" target="_blank" class="social-icon hover:text-accent-green">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://youtube.com/" target="_blank" class="social-icon hover:text-accent-green">
+                        <i class="bi bi-youtube"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg mb-3 text-white">KrishiMitra</h4>
+                <p class="text-white/80 text-sm">
+                    Weather-based crop advisory platform providing accurate predictions,
+                    soil guidance, and farming support across Maharashtra.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="text-center text-white/60 py-4 border-t border-white/10">
+            © <span id="curYear"></span> KrishiMitra — All rights reserved
+        </div>
+
+    </footer>
+
+<script src="script.js"></script>
+</body>
+</html>

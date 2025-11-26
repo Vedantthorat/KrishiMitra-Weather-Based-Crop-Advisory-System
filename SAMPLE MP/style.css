@@ -1,0 +1,249 @@
+/* ======================================
+   KrishiMitra theme - style.css
+   Improved UI • Better Cards • Dark Mode Fix
+====================================== */
+
+:root{
+  --site-gray: #f2f3f5;
+  --site-light: #ffffff;
+
+  --accent-green: #1B7F3B;
+  --accent-green-light: #e8f8ec;
+
+  --muted: #6b7280;
+  --text-dark: #07131a;
+
+  --footer-blue: #0D1B2A;
+  --muted-ghost: rgba(9,15,12,0.05);
+}
+
+/* ------------------------------
+   Global Background
+------------------------------ */
+html, body, main {
+  background-color: var(--site-gray) !important;
+}
+
+.container, section {
+  background-color: transparent !important;
+}
+
+/* ------------------------------
+   Typography
+------------------------------ */
+.text-dark { color: var(--text-dark); }
+.text-muted { color: var(--muted); }
+.text-accent-green { color: var(--accent-green); }
+
+/* ------------------------------
+   Cards (Improved Farming UI)
+------------------------------ */
+.bg-site-light {
+  background-color: var(--site-light) !important;
+}
+
+.card-farm {
+  background: var(--site-light);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.card-header-green {
+  color: var(--accent-green);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* ------------------------------
+   Weather Forecast Green Cards
+------------------------------ */
+.weather-forecast-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--accent-green-light);
+  border: 1px solid #c8e7d1;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+}
+
+/* =====================================================
+   FULL-WIDTH HERO SLIDESHOW (TOP OF PAGE)
+===================================================== */
+#heroSlideshow {
+  width: 100%;
+  height: 150px;        /* Your requested height */
+  margin-top: 10px;
+  overflow: hidden;
+  position: relative;
+  background: black;    /* Prevent white bars */
+}
+
+.hero-slide {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* Your request */
+  background: black;     /* Fill unused space */
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+/* ------------------------------
+   Buttons
+------------------------------ */
+.btn-success {
+  background-color: var(--accent-green) !important;
+  border-color: transparent !important;
+}
+.btn-outline-success {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+/* ------------------------------
+   Extra rounding
+------------------------------ */
+.rounded-2xl { border-radius: 18px !important; }
+
+/* ------------------------------
+   DARK MODE FIXED (Enhanced)
+------------------------------ */
+body.dark-mode {
+  --site-gray: #0b1220;
+  --site-light: #0f1724;
+
+  --accent-green: #2ecc71;
+  --accent-green-light: #15351d;
+
+  --muted: #9aa4b2;
+  --text-dark: #e6eef6;
+
+  --footer-blue: #071428;
+}
+
+/* Dark backgrounds */
+body.dark-mode,
+body.dark-mode main {
+  background-color: var(--site-gray) !important;
+  color: var(--text-dark);
+}
+
+/* Dark cards */
+body.dark-mode .card-farm,
+body.dark-mode .bg-site-light {
+  background: var(--site-light) !important;
+  border-color: #333;
+  box-shadow: 0 3px 8px rgba(255,255,255,0.06);
+}
+
+/* Dark forecast */
+body.dark-mode .weather-forecast-card {
+  background: var(--accent-green-light) !important;
+  border-color: #35543c;
+}
+
+/* Muted text */
+body.dark-mode .text-muted {
+  color: var(--muted) !important;
+}
+
+/* Dark footer */
+body.dark-mode .bg-footer-blue {
+  background-color: var(--footer-blue) !important;
+}
+
+/* Weather icons in dark mode */
+body.dark-mode #weatherIcon {
+  filter: brightness(0.9);
+}
+
+/* ------------------------------
+   Responsive
+------------------------------ */
+@media (max-width:640px){
+
+  /* Smaller mobile slideshow */
+  #heroSlideshow {
+    height: 110px;
+  }
+
+  header .container { padding: 12px; }
+  main .container { padding: 12px; }
+}
+
+/* ======================================================
+   FARM UI ENHANCEMENTS
+====================================================== */
+
+.card-farm {
+    background: var(--site-light);
+    border: 1px solid #e5e9e5;
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.card-header-green {
+    color: var(--accent-green);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.weather-summary-card {
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    padding: 14px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+#tempDisplay {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--accent-green);
+}
+
+#weatherIcon {
+    height: 48px;
+}
+
+/* DARK MODE EXTRA */
+body.dark-mode .card-farm,
+body.dark-mode .weather-summary-card {
+    background: #1d242e;
+    border-color: #2d3640;
+}
+
+body.dark-mode .weather-forecast-card {
+    background: #132318 !important;
+    border-color: #23452b !important;
+}
+
+body.dark-mode #tempDisplay {
+    color: #2ecc71 !important;
+}
+
+body.dark-mode header,
+body.dark-mode footer {
+    background: #0f1621 !important;
+}
+
+/* FOOTER */
+footer.bg-footer-green {
+    background-color: #0B3D2E !important;
+    color: #ffffff !important;
+}
+
+footer i { color: #ffffff !important; }
+footer a:hover { color: #2ecc71 !important; }
+footer .social-icon { font-size: 1.7rem; }
