@@ -1,205 +1,1654 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="mr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>KrishiMitra — Weather-Based Crop Advisory System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>कृषिमित्र | KrishiMitra — Smart Farmer Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700;800;900&family=Tiro+Devanagari+Marathi&family=Syne:wght@700;800&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --saffron: #E8590C;
+      --saffron-l: #FF7A30;
+      --saffron-pale: #FFF1EA;
+      --green: #1B6B3A;
+      --green-d: #0F4423;
+      --green-m: #2A8A4E;
+      --green-l: #E4F5EB;
+      --gold: #C8960C;
+      --gold-l: #F5C842;
+      --earth: #8B5E3C;
+      --sky: #1565C0;
+      --sky-l: #E3F2FD;
+      --white: #FFFFFF;
+      --off: #F7F9F5;
+      --gray: #6B7280;
+      --gray-l: #E8ECEB;
+      --dark: #141A12;
+      --card-bg: #FFFFFF;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.14);
+      --r: 10px;
+      --font: 'Noto Sans Devanagari', sans-serif;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--off);color:var(--dark);font-size:14.5px;line-height:1.65}
 
-    <!-- BOOTSTRAP -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:var(--off)}
+    ::-webkit-scrollbar-thumb{background:var(--green-m);border-radius:3px}
 
-    <!-- TAILWIND -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    /* ── UTILITY BAR ── */
+    .u-bar{background:var(--green-d);color:rgba(255,255,255,.75);font-size:12px;padding:5px 0}
+    .u-bar .inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    .u-bar a{color:rgba(255,255,255,.65);text-decoration:none;transition:.2s}
+    .u-bar a:hover{color:#fff}
+    .lang-sw{display:flex;gap:6px}
+    .lang-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7);padding:2px 11px;border-radius:4px;cursor:pointer;font-family:var(--font);font-size:11.5px;transition:.2s}
+    .lang-btn.active,.lang-btn:hover{background:var(--saffron);border-color:var(--saffron);color:#fff}
 
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="style.css">
+    /* ── HEADER ── */
+    .header{background:linear-gradient(135deg,var(--green-d) 0%,var(--green) 70%,#2e9e55 100%);padding:14px 0;box-shadow:0 3px 12px rgba(0,0,0,.25);position:relative;overflow:hidden}
+    .header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3Ccircle cx='0' cy='0' r='15'/%3E%3Ccircle cx='80' cy='80' r='15'/%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+    .h-inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;position:relative;z-index:1}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand-logo{width:58px;height:58px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 3px 12px rgba(0,0,0,.2);flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
+    .brand-text h1{font-family:var(--font-display);font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.1}
+    .brand-text .sub{color:rgba(255,255,255,.75);font-size:12px;margin-top:2px}
+    .brand-text .tag{display:inline-block;background:var(--saffron);color:#fff;font-size:10px;padding:2px 9px;border-radius:3px;margin-top:4px;font-weight:700;letter-spacing:.3px}
+    .h-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .wx-pill{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:24px;padding:7px 15px;display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;transition:.2s;backdrop-filter:blur(8px)}
+    .wx-pill:hover{background:rgba(255,255,255,.2)}
+    .wx-pill #hTemp{font-weight:800;font-size:15px}
+    /* NEW: notification bell */
+    .notif-btn{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:16px;transition:.2s}
+    .notif-btn:hover{background:rgba(255,255,255,.25)}
+    .notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--saffron);border-radius:50%;border:1.5px solid var(--green)}
+
+    /* ── NAV ── */
+    .nav{background:var(--green-d);border-bottom:3px solid var(--saffron);position:sticky;top:0;z-index:200}
+    .nav-in{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+    .nav-in::-webkit-scrollbar{display:none}
+    .nl{color:rgba(255,255,255,.8);text-decoration:none;padding:12px 15px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px;transition:.2s}
+    .nl:hover,.nl.act{color:#fff;border-bottom-color:var(--saffron);background:rgba(255,255,255,.07)}
+    .nl i{font-size:13px}
+    .nbadge{background:var(--saffron);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700}
+
+    /* ── ALERT STRIP ── */
+    .alert-strip{background:linear-gradient(90deg,#FFF8E1,#FFFDE7);border-bottom:2px solid var(--gold);padding:9px 0}
+    .alert-in{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px}
+    .alert-badge{background:var(--gold);color:#fff;font-size:10.5px;font-weight:800;padding:3px 10px;border-radius:4px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+    #alertText{font-size:13px;color:#5a4200;flex:1}
+
+    /* ── TICKER ── */
+    .ticker{background:var(--sky);color:#fff;padding:7px 0;overflow:hidden}
+    .ticker-in{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:12px}
+    .ticker-lbl{background:var(--saffron);color:#fff;font-size:10px;font-weight:800;padding:2px 10px;border-radius:3px;flex-shrink:0;letter-spacing:.5px}
+    .ticker-scroll{overflow:hidden;flex:1}
+    .ticker-ct{display:flex;animation:ticker 45s linear infinite;white-space:nowrap}
+    .ticker-ct span{font-size:12.5px;color:rgba(255,255,255,.9);padding-right:60px}
+    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* ── BREADCRUMB ── */
+    .bc{background:#fff;border-bottom:1px solid var(--gray-l);padding:7px 0}
+    .bc .inner{max-width:1240px;margin:0 auto;padding:0 20px;font-size:12px;color:var(--gray);display:flex;align-items:center;gap:5px}
+    .bc a{color:var(--green);text-decoration:none}
+    .bc a:hover{text-decoration:underline}
+
+    /* ── HERO ── */
+    .hero{background:linear-gradient(135deg,var(--green-d) 0%,var(--green) 55%,#2EA35A 100%);padding:48px 20px;color:#fff;position:relative;overflow:hidden}
+    .hero::before{content:'🌾';position:absolute;right:-20px;top:-10px;font-size:260px;opacity:.05;line-height:1;pointer-events:none}
+    .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:var(--off);clip-path:ellipse(55% 100% at 50% 100%)}
+    .hero-in{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;z-index:1}
+    .hero-title{font-family:var(--font-display);font-size:34px;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-.5px}
+    .hero-sub{color:rgba(255,255,255,.82);font-size:15px;margin-bottom:24px;max-width:540px}
+    .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+    .btn-primary{background:var(--saffron);color:#fff;border:none;padding:11px 22px;border-radius:var(--r);font-weight:700;font-size:13.5px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:8px;transition:.2s;text-decoration:none}
+    .btn-primary:hover{background:var(--saffron-l);transform:translateY(-2px);box-shadow:0 6px 20px rgba(232,89,12,.45);color:#fff}
+    .btn-outline{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.45);padding:10px 20px;border-radius:var(--r);font-weight:600;font-size:13.5px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:8px;transition:.2s;backdrop-filter:blur(4px)}
+    .btn-outline:hover{background:rgba(255,255,255,.22);border-color:#fff}
+    .hero-stats{display:flex;flex-direction:column;gap:10px;min-width:170px}
+    .stat-c{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);border-radius:var(--r);padding:12px 16px;text-align:center;backdrop-filter:blur(6px)}
+    .stat-c .n{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--gold-l)}
+    .stat-c .l{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px}
+
+    /* ── QUICK ICONS ── */
+    .quick-icons{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:28px}
+    .qi{background:#fff;border:1.5px solid var(--gray-l);border-radius:10px;padding:14px 6px;text-align:center;cursor:pointer;transition:.2s}
+    .qi:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(27,107,58,.14);transform:translateY(-2px)}
+    .qi .ico{font-size:26px;margin-bottom:5px}
+    .qi .lbl{font-size:11.5px;font-weight:700;color:var(--green-d)}
+
+    /* ── MAIN GRID ── */
+    .main-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+
+    /* ── CARDS ── */
+    .card{background:var(--card-bg);border:1px solid var(--gray-l);border-radius:var(--r);box-shadow:var(--shadow-sm);overflow:hidden}
+    .card-hd{background:linear-gradient(90deg,var(--green-l),#fff);border-bottom:1px solid var(--gray-l);padding:11px 16px;display:flex;align-items:center;justify-content:space-between}
+    .card-hd h3{font-size:13.5px;font-weight:700;color:var(--green-d);display:flex;align-items:center;gap:8px}
+    .card-body{padding:16px}
+
+    /* ── WEATHER ── */
+    .wx-main{display:flex;align-items:center;justify-content:space-between;padding:16px}
+    .wx-temp{font-family:var(--font-display);font-size:56px;font-weight:800;color:var(--green-d);line-height:1}
+    .wx-desc{color:var(--gray);font-size:13.5px;margin-top:4px;text-transform:capitalize}
+    .wx-city{font-size:13px;font-weight:700;color:var(--dark)}
+    .wx-ico{font-size:64px}
+    .wx-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 14px}
+    .wxd{background:var(--off);padding:9px 12px;border-radius:6px;font-size:12px;border:1px solid var(--gray-l)}
+    .wxd .lbl{color:var(--gray);margin-bottom:2px}
+    .wxd .val{font-weight:800;color:var(--dark);font-size:14px}
+    .forecast-row{border-top:1px solid var(--gray-l);display:grid;grid-template-columns:repeat(5,1fr);text-align:center}
+    .fc-day{padding:10px 4px;font-size:11px;border-right:1px solid var(--gray-l)}
+    .fc-day:last-child{border-right:none}
+    .fc-day .dn{font-weight:700;color:var(--green-d);font-size:12px}
+    .fc-day .ft{font-size:15px;font-weight:800;margin:4px 0}
+    .fc-day .fr{color:var(--sky);font-size:10px}
+
+    /* ── AQI CARD (NEW) ── */
+    .aqi-bar{height:8px;border-radius:4px;background:linear-gradient(90deg,#4caf50,#ffeb3b,#ff5722,#9c27b0);margin:8px 0;position:relative}
+    .aqi-marker{width:14px;height:14px;background:#fff;border:3px solid var(--dark);border-radius:50%;position:absolute;top:-3px;transform:translateX(-50%);transition:.5s}
+
+    /* ── FORM ── */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    .fg{display:flex;flex-direction:column;gap:4px}
+    .fg label{font-size:11.5px;font-weight:700;color:var(--gray);letter-spacing:.3px}
+    .fc{border:1.5px solid #D1D5DB;border-radius:6px;padding:9px 12px;font-family:var(--font);font-size:13.5px;color:var(--dark);background:#fff;transition:.2s;width:100%}
+    .fc:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(27,107,58,.12)}
+    .sub-btn{background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;border:none;padding:11px;border-radius:var(--r);font-weight:700;font-size:13.5px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:8px;transition:.2s;width:100%;justify-content:center}
+    .sub-btn:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 6px 18px rgba(27,107,58,.3)}
+    .adv-result{display:none;margin-top:14px;padding:14px;background:var(--green-l);border-radius:var(--r);border-left:4px solid var(--green)}
+    .adv-result.show{display:block}
+    .adv-result h4{color:var(--green-d);font-size:14px;margin-bottom:8px}
+    .crop-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+    .crop-chip{background:#fff;border:2px solid var(--green-m);color:var(--green-d);padding:5px 14px;border-radius:24px;font-size:12.5px;font-weight:700}
+
+    /* ── PRICE TABLE ── */
+    .ptable{width:100%;border-collapse:collapse}
+    .ptable th{background:var(--green-d);color:#fff;padding:10px 12px;font-size:12px;font-weight:700;text-align:left}
+    .ptable td{padding:9px 12px;font-size:13px;border-bottom:1px solid var(--gray-l)}
+    .ptable tr:hover td{background:var(--green-l)}
+    .pu{color:#16a34a;font-weight:700}
+    .pd{color:#dc2626;font-weight:700}
+    .ps{color:var(--gray);font-weight:700}
+    .mkt-badge{background:var(--sky);color:#fff;font-size:10px;padding:1px 8px;border-radius:8px}
+    .msp-badge{background:var(--gold);color:#fff;font-size:10px;padding:1px 6px;border-radius:4px;font-weight:700}
+
+    /* ── SCHEMES GRID ── */
+    .sch-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .sch-card{background:#fff;border:1.5px solid var(--gray-l);border-radius:var(--r);padding:15px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+    .sch-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green);border-radius:4px 0 0 4px}
+    .sch-card:hover{border-color:var(--green);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+    .sch-icon{width:42px;height:42px;background:var(--green-l);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:10px}
+    .sch-card h4{font-size:13px;font-weight:700;color:var(--green-d);margin-bottom:4px}
+    .sch-card p{font-size:12px;color:var(--gray);line-height:1.45}
+    .sch-tag{display:inline-block;margin-top:8px;background:var(--saffron-pale);color:var(--saffron);font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px}
+    .sch-new{position:absolute;top:10px;right:10px;background:var(--saffron);color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:.5px}
+
+    /* ── MODAL ── */
+    .modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;backdrop-filter:blur(4px)}
+    .modal-ov.open{display:flex}
+    .modal-box{background:#fff;border-radius:12px;max-width:640px;width:100%;box-shadow:var(--shadow-lg);overflow:hidden;animation:slideUp .25s ease}
+    @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .modal-hd{background:linear-gradient(135deg,var(--green-d),var(--green-m));color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+    .modal-hd h3{font-size:16px;font-weight:700;margin-bottom:4px}
+    .modal-hd p{font-size:12px;color:rgba(255,255,255,.8)}
+    .modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s}
+    .modal-close:hover{background:rgba(255,255,255,.3)}
+    .modal-body{padding:20px}
+    .ben-list{list-style:none}
+    .ben-list li{padding:9px 0;border-bottom:1px solid var(--gray-l);font-size:13.5px;display:flex;align-items:flex-start;gap:10px}
+    .ben-list li i{color:var(--green);margin-top:2px;flex-shrink:0}
+    .elig{background:var(--green-l);border-radius:var(--r);padding:14px;margin-top:14px}
+    .elig h5{font-size:12.5px;font-weight:700;color:var(--green-d);margin-bottom:8px}
+    .etag{display:inline-block;background:#fff;border:1px solid var(--green-m);color:var(--green-d);font-size:12px;padding:3px 12px;border-radius:20px;margin:3px}
+    .apply-btn{display:block;width:100%;padding:12px;background:var(--saffron);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);margin-top:16px;transition:.2s}
+    .apply-btn:hover{filter:brightness(1.1)}
+
+    /* ── CHATBOT ── */
+    .chat-fab{position:fixed;bottom:24px;right:24px;z-index:500;background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(27,107,58,.5);display:flex;align-items:center;justify-content:center;font-size:24px;transition:.3s}
+    .chat-fab:hover{transform:scale(1.1);box-shadow:0 8px 32px rgba(27,107,58,.65)}
+    .chat-fab .fbadge{position:absolute;top:0;right:0;background:var(--saffron);color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:800;border:2px solid #fff}
+    .chat-win{display:none;position:fixed;bottom:100px;right:24px;z-index:499;width:370px;max-height:540px;background:#fff;border-radius:14px;box-shadow:0 12px 48px rgba(0,0,0,.22);overflow:hidden;flex-direction:column;border:1px solid var(--gray-l);animation:slideUp .25s ease}
+    .chat-win.open{display:flex}
+    .chat-hd{background:linear-gradient(135deg,var(--green-d),var(--green-m));color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+    .chat-av{width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .chat-hi h4{font-size:14px;font-weight:700}
+    .chat-hi p{font-size:11px;color:rgba(255,255,255,.8)}
+    .chat-online{width:7px;height:7px;background:#4ade80;border-radius:50%;display:inline-block;margin-right:4px}
+    .chat-close{margin-left:auto;background:rgba(255,255,255,.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s;flex-shrink:0}
+    .chat-close:hover{background:rgba(255,255,255,.3)}
+    /* ── CHAT TABS ── */
+    .chat-tabs{display:flex;border-bottom:1px solid var(--gray-l);background:#f9fafb}
+    .ctab{flex:1;padding:8px;font-size:11.5px;font-weight:700;text-align:center;cursor:pointer;color:var(--gray);border-bottom:2px solid transparent;transition:.2s;font-family:var(--font)}
+    .ctab.act{color:var(--green);border-bottom-color:var(--green);background:#fff}
+    .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+    .msg{max-width:82%;display:flex;flex-direction:column;gap:3px}
+    .msg.bot{align-self:flex-start}
+    .msg.user{align-self:flex-end}
+    .mbubble{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5}
+    .msg.bot .mbubble{background:var(--off);border:1px solid var(--gray-l);color:var(--dark);border-bottom-left-radius:3px}
+    .msg.user .mbubble{background:var(--green);color:#fff;border-bottom-right-radius:3px}
+    .mtime{font-size:10px;color:var(--gray)}
+    .msg.user .mtime{text-align:right}
+    .qrs{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 8px}
+    .qr{background:var(--green-l);border:1px solid var(--green-m);color:var(--green-d);border-radius:16px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:var(--font);transition:.15s;font-weight:600}
+    .qr:hover{background:var(--green-m);color:#fff}
+    /* ── VOICE INPUT ── */
+    .chat-inp-row{display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--gray-l);align-items:center}
+    .chat-inp{flex:1;border:1.5px solid var(--gray-l);border-radius:22px;padding:8px 14px;font-family:var(--font);font-size:13px;outline:none;background:#f9fafb}
+    .chat-inp:focus{border-color:var(--green);background:#fff}
+    .mic-btn{background:var(--off);border:1.5px solid var(--gray-l);color:var(--gray);width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0}
+    .mic-btn:hover{border-color:var(--green);color:var(--green)}
+    .mic-btn.listening{background:var(--saffron);border-color:var(--saffron);color:#fff;animation:pulse-mic 1s infinite}
+    @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(232,89,12,.4)}50%{box-shadow:0 0 0 8px rgba(232,89,12,0)}}
+    .chat-send{background:var(--green);color:#fff;border:none;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.2s;flex-shrink:0}
+    .chat-send:hover{background:var(--green-d)}
+    .typing-ind{display:flex;align-items:center;gap:4px;padding:8px 12px}
+    .tdot{width:7px;height:7px;background:var(--gray);border-radius:50%;animation:bounce 1.2s infinite}
+    .tdot:nth-child(2){animation-delay:.2s}
+    .tdot:nth-child(3){animation-delay:.4s}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+    /* Voice Status */
+    .voice-status{text-align:center;padding:6px;font-size:11.5px;color:var(--saffron);font-weight:600;display:none}
+    .voice-status.show{display:block}
+
+    /* ── SECTION ── */
+    .sec-wrap{max-width:1240px;margin:0 auto;padding:28px 20px}
+    .sec-title{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+    .sec-title .bar{width:4px;height:24px;background:var(--saffron);border-radius:2px}
+    .sec-title h2{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--green-d)}
+    .sec-title .tag{background:var(--green-l);color:var(--green-d);font-size:11px;font-weight:700;padding:2px 10px;border-radius:8px}
+
+    /* ── PAGE SECTIONS ── */
+    .pg{display:none}
+    .pg.act{display:block}
+
+    /* ── SOIL ── */
+    .soil-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .soil-btn{padding:14px;border:2px solid var(--gray-l);border-radius:8px;text-align:center;cursor:pointer;transition:.2s;background:#fff}
+    .soil-btn:hover,.soil-btn.act{border-color:var(--green);background:var(--green-l)}
+    .soil-btn .si{font-size:26px;margin-bottom:4px}
+    .soil-btn .sn{font-size:12px;font-weight:700;color:var(--green-d)}
+    .soil-out{margin-top:12px;padding:14px;background:var(--off);border-radius:var(--r);border:1px solid var(--gray-l);font-size:13px;line-height:1.65;display:none}
+    .soil-out.show{display:block}
+    .soil-out h5{color:var(--green-d);font-weight:700;margin-bottom:7px}
+
+    /* ── CALENDAR ── */
+    .cal-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--gray-l)}
+    .cal-item:last-child{border-bottom:none}
+    .cal-mo{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:5px;min-width:90px;text-align:center;flex-shrink:0}
+    .cal-act{font-size:13px}
+
+    /* ── NEW: PEST ALERT SECTION ── */
+    .pest-card{background:#fff;border:1.5px solid #FEE2E2;border-radius:var(--r);padding:14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
+    .pest-sev{width:8px;align-self:stretch;border-radius:4px;flex-shrink:0}
+    .pest-sev.high{background:#ef4444}
+    .pest-sev.med{background:#f59e0b}
+    .pest-sev.low{background:#22c55e}
+    .pest-icon{font-size:28px;flex-shrink:0}
+    .pest-info h4{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:3px}
+    .pest-info p{font-size:12px;color:var(--gray)}
+    .pest-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-top:5px}
+    .pb-high{background:#FEE2E2;color:#dc2626}
+      .pb-med{background:#FEF3C7;color:#d97706}
+    .pb-low{background:#DCFCE7;color:#16a34a}
+
+    /* ── NEW: MANDI LOCATOR ── */
+    .mandi-list{display:flex;flex-direction:column;gap:10px}
+    .mandi-item{background:#fff;border:1px solid var(--gray-l);border-radius:8px;padding:12px;display:flex;align-items:center;gap:12px}
+    .mandi-item .mi-ico{width:40px;height:40px;background:var(--green-l);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .mandi-item h4{font-size:13px;font-weight:700;color:var(--dark)}
+    .mandi-item p{font-size:11.5px;color:var(--gray)}
+    .mandi-item .dist{margin-left:auto;font-size:12px;font-weight:700;color:var(--green);background:var(--green-l);padding:4px 10px;border-radius:20px}
+
+    /* ── NEW: LOAN CALCULATOR ── */
+    .loan-calc{background:var(--green-l);border-radius:var(--r);padding:16px}
+    .loan-result{background:#fff;border-radius:8px;padding:14px;margin-top:12px;border:1px solid var(--gray-l)}
+    .loan-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--gray-l);font-size:13px}
+    .loan-row:last-child{border-bottom:none;font-weight:800;color:var(--green-d);font-size:14px}
+
+    /* ── HELPLINE CARD ── */
+    .help-card{background:linear-gradient(135deg,var(--green-d),var(--green-m));color:#fff;border-radius:var(--r);overflow:hidden}
+    .help-card .hc-body{padding:16px;text-align:center}
+    .help-card .num{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--gold-l);margin:8px 0}
+
+    /* ── CROP PRICE CHART (Canvas) ── */
+    #priceChart{width:100%!important;max-height:180px}
+
+    /* ── NOTIFICATIONS PANEL ── */
+    .notif-panel{display:none;position:fixed;top:110px;right:24px;z-index:300;width:320px;background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);border:1px solid var(--gray-l);overflow:hidden;animation:slideUp .2s ease}
+    .notif-panel.open{display:block}
+    .np-hd{background:var(--green-d);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+    .np-hd h4{font-size:14px;font-weight:700}
+    .np-close{background:none;border:none;color:#fff;cursor:pointer;font-size:16px}
+    .np-item{padding:12px 16px;border-bottom:1px solid var(--gray-l);display:flex;gap:10px;align-items:flex-start}
+    .np-item:last-child{border-bottom:none}
+    .np-item .np-ico{font-size:22px;flex-shrink:0}
+    .np-item h5{font-size:12.5px;font-weight:700;color:var(--dark);margin-bottom:2px}
+    .np-item p{font-size:11.5px;color:var(--gray)}
+    .np-item .np-time{font-size:10px;color:var(--gray);margin-top:3px}
+
+    /* ── LIVE BADGE ── */
+    .live-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;background:#DCFCE7;color:#16a34a;padding:2px 8px;border-radius:8px}
+    .live-dot{width:6px;height:6px;background:#16a34a;border-radius:50%;animation:blink 1.2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* ── SPINNER ── */
+    .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+    @keyframes sp{to{transform:rotate(360deg)}}
+
+    /* ── FOOTER ── */
+    .footer{background:var(--green-d);color:rgba(255,255,255,.75);margin-top:40px}
+    .ft-top{max-width:1240px;margin:0 auto;padding:32px 20px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+    .footer h5{color:#fff;font-size:13px;font-weight:700;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .footer ul{list-style:none}
+    .footer ul li{margin-bottom:8px}
+    .footer ul li a{color:rgba(255,255,255,.65);text-decoration:none;font-size:12.5px;transition:.2s}
+    .footer ul li a:hover{color:var(--gold-l)}
+    .fb-brand p{font-size:12.5px;line-height:1.65;margin-bottom:12px}
+    .fb-social{display:flex;gap:10px}
+    .fb-social a{width:32px;height:32px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;transition:.2s}
+    .fb-social a:hover{background:var(--saffron)}
+    .ft-bottom{border-top:1px solid rgba(255,255,255,.1);padding:14px 0;text-align:center;font-size:12px}
+    .ft-bottom .inner{max-width:1240px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .main-grid{grid-template-columns:1fr}
+      .ft-top{grid-template-columns:1fr 1fr}
+      .hero-in{grid-template-columns:1fr}
+      .hero-stats{flex-direction:row;min-width:unset}
+      .quick-icons{grid-template-columns:repeat(4,1fr)}
+    }
+    @media(max-width:600px){
+      .hero-title{font-size:24px}
+      .form-row{grid-template-columns:1fr}
+      .sch-grid{grid-template-columns:1fr}
+      .soil-grid{grid-template-columns:repeat(2,1fr)}
+      .ft-top{grid-template-columns:1fr}
+      .chat-win{width:calc(100vw - 32px);right:16px}
+      .quick-icons{grid-template-columns:repeat(4,1fr)}
+    }
+  </style>
 </head>
+<body>
 
-<body class="bg-site-gray text-dark">
+<!-- ── NOTIFICATIONS PANEL ── -->
+<div class="notif-panel" id="notifPanel">
+  <div class="np-hd">
+    <h4>🔔 सूचना (Notifications)</h4>
+    <button class="np-close" onclick="toggleNotif()">✕</button>
+  </div>
+  <div class="np-item"><div class="np-ico">💰</div><div><h5>PM-KISAN 19वा हप्ता</h5><p>₹2,000 लवकरच तुमच्या खात्यात येईल.</p><div class="np-time">आज</div></div></div>
+  <div class="np-item"><div class="np-ico">⚠️</div><div><h5>कापूस पांढरी माशी सतर्कता</h5><p>विदर्भात कापूस उत्पादकांनी काळजी घ्यावी.</p><div class="np-time">2 तासांपूर्वी</div></div></div>
+  <div class="np-item"><div class="np-ico">🌧️</div><div><h5>पाऊस अंदाज</h5><p>पुढील 3 दिवसांत मध्यम पावसाची शक्यता.</p><div class="np-time">काल</div></div></div>
+  <div class="np-item"><div class="np-ico">📋</div><div><h5>पिक विमा अर्ज मुदत</h5><p>खरीप 2025 विम्यासाठी अंतिम तारीख: जून 30.</p><div class="np-time">3 दिवसांपूर्वी</div></div></div>
+</div>
 
-    <!-- HEADER -->
-    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+<!-- ── UTILITY BAR ── -->
+<div class="u-bar">
+  <div class="inner">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <span>🌿 कृषिमित्र — Smart Farmer Portal</span>
+      <a href="#" onclick="goTo('policies');return false;"><i class="fas fa-file-alt"></i> शेतकरी योजना</a>
+      <a href="#" onclick="goTo('prices');return false;"><i class="fas fa-chart-line"></i> बाजार भाव</a>
+      <a href="#" onclick="goTo('loans');return false;"><i class="fas fa-calculator"></i> कर्ज कॅल्क्युलेटर</a>
+    </div>
+    <div class="lang-sw">
+      <span>भाषा:</span>
+      <button class="lang-btn active" onclick="setLang('mr')">मराठी</button>
+      <button class="lang-btn" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+    </div>
+  </div>
+</div>
 
-            <div class="flex items-center gap-3">
-                <img src="logo.jpg" class="h-14 rounded shadow-sm">
-                <div>
-                    <h2 class="text-2xl font-extrabold text-accent-green">KrishiMitra</h2>
-                    <p class="text-muted text-sm">Weather-Based Crop Advisory System</p>
-                </div>
-            </div>
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-inner">
+    <div class="brand">
+      <div class="brand-logo">🌾</div>
+      <div class="brand-text">
+        <h1 id="brandTitle">कृषिमित्र</h1>
+        <div class="sub" id="brandSub">हवामान आधारित पिक सल्ला प्रणाली</div>
+        <div class="tag">Smart Farmer Portal</div>
+      </div>
+    </div>
+    <div class="h-right">
+      <div class="wx-pill" onclick="goTo('home')">
+        <i class="fas fa-cloud-sun"></i>
+        <span id="hTemp">-- °C</span>
+        <span id="hCity">--</span>
+      </div>
+      <div class="notif-btn" onclick="toggleNotif()" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <div class="notif-dot"></div>
+      </div>
+    </div>
+  </div>
+</header>
 
-            <div class="flex items-center gap-3">
-                <select id="langSelect" class="form-select form-select-sm w-36">
-                    <option value="en">English</option>
-                    <option value="mr">मराठी</option>
-                    <option value="hi">हिन्दी</option>
-                </select>
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-in">
+    <a class="nl act" href="#" onclick="goTo('home');return false;" id="nav-home"><i class="fas fa-home"></i><span data-key="home">मुख्यपृष्ठ</span></a>
+    <a class="nl" href="#" onclick="goTo('advisory');return false;" id="nav-advisory"><i class="fas fa-seedling"></i><span data-key="advisory">पिक सल्ला</span></a>
+    <a class="nl" href="#" onclick="goTo('prices');return false;" id="nav-prices"><i class="fas fa-tags"></i><span data-key="prices">बाजार भाव</span></a>
+    <a class="nl" href="#" onclick="goTo('policies');return false;" id="nav-policies"><i class="fas fa-file-contract"></i><span data-key="policies">शासन योजना</span><span class="nbadge">नवीन</span></a>
+    <a class="nl" href="#" onclick="goTo('soil');return false;" id="nav-soil"><i class="fas fa-mountain"></i><span data-key="soil">माती माहिती</span></a>
+    <a class="nl" href="#" onclick="goTo('calendar');return false;" id="nav-calendar"><i class="fas fa-calendar-alt"></i><span data-key="calendar">दिनदर्शिका</span></a>
+    <a class="nl" href="#" onclick="goTo('pests');return false;" id="nav-pests"><i class="fas fa-bug"></i><span data-key="pests">कीड सतर्कता</span><span class="nbadge" style="background:#ef4444">3</span></a>
+    <a class="nl" href="#" onclick="goTo('loans');return false;" id="nav-loans"><i class="fas fa-calculator"></i><span data-key="loans">कर्ज कॅल्क्युलेटर</span></a>
+    <a class="nl" href="#" onclick="goTo('mandi');return false;" id="nav-mandi"><i class="fas fa-store"></i><span data-key="mandi">मंडी शोधा</span></a>
+  </div>
+</nav>
 
-                <button id="themeToggle" class="btn btn-outline-secondary btn-sm">
-                    <span id="themeIcon">🌙</span>
-                </button>
+<!-- ── ALERT STRIP ── -->
+<div class="alert-strip">
+  <div class="alert-in">
+    <span class="alert-badge">📢 सूचना</span>
+    <marquee><span id="alertText">खरीप हंगाम 2025 नोंदणी सुरू आहे। PM-KISAN 19वा हप्ता लवकरच येणार आहे। प्रधानमंत्री फसल विमा योजना अर्ज स्वीकारले जात आहेत। कापूस: ₹6,500 | सोयाबीन: ₹4,100 | कांदा: ₹2,800</span></marquee>
+  </div>
+</div>
 
-                <button id="openAdvisoryHeader" class="btn btn-success btn-sm">Open Advisory</button>
-            </div>
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-in">
+    <span class="ticker-lbl">📊 LIVE भाव</span>
+    <div class="ticker-scroll">
+      <div class="ticker-ct" id="tickerCt">
+        <span>🌾 गहू: ₹2,275/क्विं. ▲ | 🌽 मका: ₹1,950/क्विं. ▲ | 🌿 सोयाबीन: ₹4,100/क्विं. ▼ | 🧅 कांदा: ₹2,800/क्विं. ▲ | 🍅 टोमॅटो: ₹1,200/क्विं. ▼ | 🌾 धान: ₹2,183/क्विं. — | 🥜 भुईमूग: ₹5,850/क्विं. ▲ | ☕ कापूस: ₹6,500/क्विं. ▼ | 🌾 ज्वारी: ₹3,200/क्विं. ▲ | 🌾 बाजरी: ₹2,500/क्विं. — |</span>
+        <span>🌾 गहू: ₹2,275/क्विं. ▲ | 🌽 मका: ₹1,950/क्विं. ▲ | 🌿 सोयाबीन: ₹4,100/क्विं. ▼ | 🧅 कांदा: ₹2,800/क्विं. ▲ | 🍅 टोमॅटो: ₹1,200/क्विं. ▼ | 🌾 धान: ₹2,183/क्विं. — | 🥜 भुईमूग: ₹5,850/क्विं. ▲ | ☕ कापूस: ₹6,500/क्विं. ▼ | 🌾 ज्वारी: ₹3,200/क्विं. ▲ | 🌾 बाजरी: ₹2,500/क्विं. — |</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BREADCRUMB ── -->
+<div class="bc">
+  <div class="inner">
+    <i class="fas fa-home"></i>
+    <a href="#" onclick="goTo('home');return false;">मुख्यपृष्ठ</a>
+    <span id="bcrumb"></span>
+  </div>
+</div>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div class="pg act" id="pg-home">
+  <div class="hero">
+    <div class="hero-in">
+      <div>
+        <h1 class="hero-title" id="heroTitle">महाराष्ट्रातील शेतकऱ्यांचा विश्वासू मित्र 🌿</h1>
+        <p class="hero-sub" id="heroSub">हवामान, माती आणि बाजारभाव यावर आधारित अचूक पिक सल्ला — मराठीत, थेट तुमच्या मोबाईलवर</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo('advisory')"><i class="fas fa-seedling"></i><span id="hb1">पिक सल्ला मिळवा</span></button>
+          <button class="btn-outline" onclick="goTo('prices')"><i class="fas fa-chart-line"></i><span id="hb2">आजचे बाजार भाव</span></button>
+          <button class="btn-outline" onclick="goTo('policies')"><i class="fas fa-file-contract"></i><span id="hb3">शासन योजना</span></button>
         </div>
-    </header>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-c"><div class="n">58+</div><div class="l">जिल्हे कव्हर केले</div></div>
+        <div class="stat-c"><div class="n">1.2L+</div><div class="l">शेतकरी</div></div>
+        <div class="stat-c"><div class="n">95%</div><div class="l">अचूकता दर</div></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- FULL-PAGE SLIDESHOW (NEW TOP HERO) -->
-    <div id="heroSlideshow">
-        <img src="weather1.jpg" class="hero-slide active">
-        <img src="weather2.jpg" class="hero-slide">
-        <img src="weather3.jpg" class="hero-slide">
-        <img src="weather4.jpg" class="hero-slide">
+  <div class="sec-wrap">
+    <!-- QUICK ICONS -->
+    <div class="quick-icons">
+      <div class="qi" onclick="goTo('advisory')"><div class="ico">🌾</div><div class="lbl">पिक सल्ला</div></div>
+      <div class="qi" onclick="goTo('prices')"><div class="ico">📈</div><div class="lbl">बाजार भाव</div></div>
+      <div class="qi" onclick="goTo('policies')"><div class="ico">📋</div><div class="lbl">योजना</div></div>
+      <div class="qi" onclick="goTo('soil')"><div class="ico">🪨</div><div class="lbl">माती माहिती</div></div>
+      <div class="qi" onclick="goTo('pests')"><div class="ico">🐛</div><div class="lbl">कीड सतर्कता</div></div>
+      <div class="qi" onclick="goTo('loans')"><div class="ico">🏦</div><div class="lbl">कर्ज कॅल्क्युलेटर</div></div>
+      <div class="qi" onclick="openChat()"><div class="ico" style="color:var(--saffron)">💬</div><div class="lbl" style="color:var(--saffron)">AI चॅटबॉट</div></div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="container mx-auto px-4 py-8">
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px">
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- LEFT PANEL -->
-            <div class="rounded-2xl p-8 bg-white shadow-md">
-                <h1 id="heroTitle" class="text-3xl font-extrabold text-accent-green"></h1>
-                <p id="heroSub" class="mt-3 text-muted"></p>
-
-                <div class="mt-6 flex flex-wrap gap-3">
-                    <button id="openAdvisoryBtn" class="btn btn-success shadow"></button>
-                    <button id="downloadGuide" class="btn btn-outline-secondary">Download Guide</button>
-                    <a href="mailto:vedantthorat200@gmail.com" class="btn btn-outline-warning">Contact</a>
-                </div>
-
-                <h3 class="text-lg font-semibold mt-8">Features</h3>
-                <ul class="list-disc list-inside mt-3 text-muted">
-                    <li>Weather-based crop recommendations</li>
-                    <li>Soil guidance & farming calendar</li>
-                    <li>Predict Crop ML Model</li>
-                    <li>Simple multilingual interface</li>
-                </ul>
+        <!-- WEATHER -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-cloud-sun" style="color:var(--saffron)"></i>&nbsp;<span id="wxTitle">आजचे हवामान</span></h3>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+              <span style="font-size:12px;color:var(--gray)" id="wxLoc">स्थान शोधत आहे...</span>
             </div>
+          </div>
+          <div class="wx-main">
+            <div>
+              <div class="wx-city" id="wxCity">--</div>
+              <div class="wx-temp" id="wxTemp">--°</div>
+              <div class="wx-desc" id="wxDesc">--</div>
+            </div>
+            <div class="wx-ico" id="wxIco">🌤️</div>
+          </div>
+          <div class="wx-details">
+            <div class="wxd"><div class="lbl">💧 आर्द्रता</div><div class="val" id="wxHum">--%</div></div>
+            <div class="wxd"><div class="lbl">💨 वारा</div><div class="val" id="wxWind">-- km/h</div></div>
+            <div class="wxd"><div class="lbl">🌡️ जाणवते</div><div class="val" id="wxFeels">--°C</div></div>
+            <div class="wxd"><div class="lbl">👁️ दृश्यमानता</div><div class="val" id="wxVis">-- km</div></div>
+            <div class="wxd"><div class="lbl">🔴 UV निर्देशांक</div><div class="val" id="wxUV">--</div></div>
+            <div class="wxd"><div class="lbl">📊 दबाव</div><div class="val" id="wxPres">-- hPa</div></div>
+          </div>
+          <div class="forecast-row" id="fcRow">
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+          </div>
+        </div>
 
-            <!-- RIGHT PANEL -->
-            <aside class="rounded-2xl p-6 bg-white shadow-md flex flex-col gap-4">
-
-                <div class="flex flex-col items-center gap-3">
-                    <img src="predict_crop_logo.jpg" class="h-20 rounded shadow-sm">
-                    <button id="predictCropBtn" class="btn btn-success w-full sm:w-3/4">
-                        Predict Crop Now
-                    </button>
-                </div>
-
-                <div class="flex items-center justify-between p-3 rounded-lg bg-muted-ghost border">
-                    <div>
-                        <p class="text-muted text-sm">Location</p>
-                        <p id="locationName" class="font-bold text-accent-green">--</p>
-                    </div>
-
-                    <div class="text-right">
-                        <h3 id="tempDisplay" class="text-2xl font-extrabold">--°C</h3>
-                        <p id="weatherDesc" class="text-muted text-sm">--</p>
-                        <img id="weatherIcon" class="h-10 mt-1" />
-                    </div>
-                </div>
-
-                <div id="forecastSection" class="rounded-lg p-3 bg-muted-ghost border">
-                    <h4 class="text-accent-green font-bold mb-2">3-Day Forecast</h4>
-                    <div id="forecastList" class="space-y-2 text-sm text-muted"></div>
-                </div>
-
-                <!-- Slideshow removed from here -->
-
-                <div class="flex gap-2">
-                    <button id="openInNewTab" class="btn btn-outline-secondary">Open in new tab</button>
-                    <button id="viewSoilBtn" class="btn btn-outline-success">View Soil Info</button>
-                </div>
-            </aside>
-
-        </section>
-
-        <!-- SOIL / CALENDAR / RESOURCES -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <div id="soilCard" class="rounded-xl bg-site-light p-5 border">
-                <h4 class="text-accent-green font-bold">Soil Information</h4>
-                <p class="text-muted text-sm mt-1">Select your soil type.</p>
-                <select id="soilZone" class="form-select mt-3">
-                    <option value="black">Black Cotton Soil</option>
-                    <option value="lateritic">Lateritic Soil</option>
-                    <option value="alluvial">Alluvial Soil</option>
-                    <option value="red">Red Soil</option>
+        <!-- QUICK ADVISORY -->
+        <div class="card">
+          <div class="card-hd"><h3><i class="fas fa-seedling" style="color:var(--green)"></i>&nbsp;त्वरित पिक सल्ला</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>जिल्हा निवडा</label>
+                <select class="fc" id="qDist">
+                  <option value="">-- जिल्हा निवडा --</option>
+                  <option>पुणे</option><option>नाशिक</option><option>औरंगाबाद</option>
+                  <option>नागपूर</option><option>सोलापूर</option><option>कोल्हापूर</option>
+                  <option>सातारा</option><option>अमरावती</option><option>लातूर</option>
+                  <option>अकोला</option><option>जळगाव</option><option>धुळे</option>
+                  <option>सांगली</option><option>रत्नागिरी</option><option>सिंधुदुर्ग</option>
                 </select>
-                <div id="soilOutput" class="mt-3 text-muted text-sm"></div>
+              </div>
+              <div class="fg"><label>माती प्रकार</label>
+                <select class="fc" id="qSoil">
+                  <option value="">-- माती प्रकार --</option>
+                  <option value="black">काळी माती</option>
+                  <option value="red">लाल माती</option>
+                  <option value="lateritic">लॅटेराइट माती</option>
+                  <option value="alluvial">गाळाची माती</option>
+                </select>
+              </div>
             </div>
-
-            <div id="calendarCard" class="rounded-xl bg-site-light p-5 border">
-                <h4 class="text-accent-green font-bold">Farming Calendar</h4>
-                <div id="calendarList" class="mt-3 text-muted text-sm"></div>
+            <div class="form-row">
+              <div class="fg"><label>हंगाम</label>
+                <select class="fc" id="qSeason">
+                  <option value="kharif">खरीप (जून-ऑक्टोबर)</option>
+                  <option value="rabi">रब्बी (नोव्हेंबर-मार्च)</option>
+                  <option value="summer">उन्हाळी (मार्च-जून)</option>
+                </select>
+              </div>
+              <div class="fg"><label>सिंचन व्यवस्था</label>
+                <select class="fc" id="qIrrig">
+                  <option value="rain">पावसावर अवलंबित</option>
+                  <option value="well">विहीर/बोअरवेल</option>
+                  <option value="canal">कालवा</option>
+                  <option value="drip">ठिबक सिंचन</option>
+                </select>
+              </div>
             </div>
-
-            <div id="resourcesCard" class="rounded-xl bg-site-light p-5 border">
-                <h4 class="text-accent-green font-bold">Resources & Guides</h4>
-                <ul class="list-disc list-inside mt-3 text-muted text-sm">
-                    <li>Drip irrigation setup</li>
-                    <li>Organic pest control</li>
-                    <li>Seed selection tips</li>
-                </ul>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-footer-green mt-10">
-
-        <div class="container mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-
-            <div>
-                <h4 class="font-bold text-lg mb-3 text-white">Contact Us</h4>
-                <p class="flex items-center gap-2">
-                    <i class="bi bi-envelope-fill"></i>
-                    <a href="mailto:vedantthorat200@gmail.com" class="text-white/85 hover:text-accent-green">
-                        vedantthorat200@gmail.com
-                    </a>
-                </p>
-                <p class="flex items-center gap-2 mt-2">
-                    <i class="bi bi-telephone-fill"></i>
-                    <a href="tel:+91917503645" class="text-white/85 hover:text-accent-green">
-                        +91 917503645
-                    </a>
-                </p>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-lg mb-3 text-white">Follow Us</h4>
-                <div class="flex gap-5">
-                    <a href="https://instagram.com/" target="_blank" class="social-icon hover:text-accent-green">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="https://facebook.com/" target="_blank" class="social-icon hover:text-accent-green">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="https://youtube.com/" target="_blank" class="social-icon hover:text-accent-green">
-                        <i class="bi bi-youtube"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <h4 class="font-bold text-lg mb-3 text-white">KrishiMitra</h4>
-                <p class="text-white/80 text-sm">
-                    Weather-based crop advisory platform providing accurate predictions,
-                    soil guidance, and farming support across Maharashtra.
-                </p>
-            </div>
-
+            <button class="sub-btn" onclick="getQAdvisory()"><i class="fas fa-search"></i>सल्ला मिळवा</button>
+            <div class="adv-result" id="qResult"></div>
+          </div>
         </div>
 
-        <div class="text-center text-white/60 py-4 border-t border-white/10">
-            © <span id="curYear"></span> KrishiMitra — All rights reserved
+        <!-- PRICE TREND CHART -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-chart-area" style="color:var(--gold)"></i>&nbsp;किंमत ट्रेंड (7 दिवस)</h3>
+            <select class="fc" style="width:auto;padding:4px 10px;font-size:12px" id="chartCrop" onchange="updateChart()">
+              <option value="soybean">सोयाबीन</option>
+              <option value="cotton">कापूस</option>
+              <option value="onion">कांदा</option>
+              <option value="wheat">गहू</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <canvas id="priceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- LIVE PRICES -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-tags" style="color:var(--gold)"></i>&nbsp;आजचे भाव</h3>
+            <a href="#" onclick="goTo('prices');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="ptable">
+              <thead><tr><th>पिक</th><th>भाव</th><th>बदल</th></tr></thead>
+              <tbody>
+                <tr><td>सोयाबीन</td><td>₹4,100</td><td class="pd">▼ 2.1%</td></tr>
+                <tr><td>कापूस</td><td>₹6,500</td><td class="pd">▼ 0.8%</td></tr>
+                <tr><td>कांदा</td><td>₹2,800</td><td class="pu">▲ 5.3%</td></tr>
+                <tr><td>गहू</td><td>₹2,275</td><td class="pu">▲ 1.2%</td></tr>
+                <tr><td>ज्वारी</td><td>₹3,200</td><td class="pu">▲ 0.9%</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-    </footer>
+        <!-- PEST ALERT MINI -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-bug" style="color:#ef4444"></i>&nbsp;कीड सतर्कता</h3>
+            <a href="#" onclick="goTo('pests');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div class="card-body" style="padding:10px">
+            <div class="pest-card" style="padding:10px;margin-bottom:6px">
+              <div class="pest-sev high"></div>
+              <div class="pest-icon">🐛</div>
+              <div class="pest-info"><h4>पांढरी माशी — कापूस</h4><p>विदर्भात उच्च धोका</p><span class="pest-badge pb-high">उच्च धोका</span></div>
+            </div>
+            <div class="pest-card" style="padding:10px">
+              <div class="pest-sev med"></div>
+              <div class="pest-icon">🦗</div>
+              <div class="pest-info"><h4>खोडकिडा — ज्वारी</h4><p>मराठवाड्यात मध्यम धोका</p><span class="pest-badge pb-med">मध्यम धोका</span></div>
+            </div>
+          </div>
+        </div>
 
-<script src="script.js"></script>
+        <!-- SCHEMES PREVIEW -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-star" style="color:var(--saffron)"></i>&nbsp;महत्त्वाच्या योजना</h3>
+            <a href="#" onclick="goTo('policies');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div class="card-body" style="padding:10px;display:flex;flex-direction:column;gap:7px">
+            <div onclick="openScheme('pmkisan')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;transition:.2s;border:1px solid var(--gray-l)" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--green-l')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--off')">
+              <span style="font-size:22px">💰</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">PM-KISAN</div><div style="font-size:11px;color:var(--gray)">₹6,000/वर्ष थेट लाभ</div></div>
+            </div>
+            <div onclick="openScheme('fasal-bima')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;transition:.2s;border:1px solid var(--gray-l)" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--green-l')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--off')">
+              <span style="font-size:22px">🛡️</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">पिक विमा योजना</div><div style="font-size:11px;color:var(--gray)">नैसर्गिक आपत्ती संरक्षण</div></div>
+            </div>
+            <div onclick="openScheme('kcc')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;transition:.2s;border:1px solid var(--gray-l)" onmouseover="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--green-l')" onmouseout="this.style.background=getComputedStyle(document.documentElement).getPropertyValue('--off')">
+              <span style="font-size:22px">💳</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">किसान क्रेडिट कार्ड</div><div style="font-size:11px;color:var(--gray)">4% व्याजावर कर्ज</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HELPLINE -->
+        <div class="help-card">
+          <div class="hc-body">
+            <div style="font-size:32px;margin-bottom:6px">📞</div>
+            <div style="font-size:14px;font-weight:700">कृषि हेल्पलाइन</div>
+            <div class="num">1800-180-1551</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.75)">टोल-फ्री | सोम-शनि | सकाळी 6 ते रात्री 10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADVISORY PAGE ══════════════ -->
+<div class="pg" id="pg-advisory">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>पिक सल्ला प्रणाली</h2><span class="tag">AI-Powered</span></div>
+    <div class="main-grid">
+      <div>
+        <div class="card">
+          <div class="card-hd"><h3><i class="fas fa-seedling" style="color:var(--green)"></i>&nbsp;तुमची माहिती भरा</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>📍 जिल्हा</label>
+                <select class="fc" id="aDist">
+                  <option value="">-- जिल्हा निवडा --</option>
+                  <option>पुणे</option><option>नाशिक</option><option>औरंगाबाद</option>
+                  <option>नागपूर</option><option>सोलापूर</option><option>कोल्हापूर</option>
+                  <option>सातारा</option><option>अमरावती</option><option>लातूर</option>
+                  <option>अकोला</option><option>जळगाव</option><option>धुळे</option>
+                </select>
+              </div>
+              <div class="fg"><label>🪨 माती प्रकार</label>
+                <select class="fc" id="aSoil">
+                  <option value="">-- माती प्रकार --</option>
+                  <option value="black">काळी माती</option><option value="red">लाल माती</option>
+                  <option value="lateritic">लॅटेराइट माती</option><option value="alluvial">गाळाची माती</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>🌦️ हंगाम</label>
+                <select class="fc" id="aSeason">
+                  <option value="kharif">खरीप</option><option value="rabi">रब्बी</option><option value="summer">उन्हाळी</option>
+                </select>
+              </div>
+              <div class="fg"><label>💧 सिंचन</label>
+                <select class="fc" id="aIrrig">
+                  <option value="rain">पावसावर अवलंबित</option><option value="well">विहीर/बोअरवेल</option>
+                  <option value="canal">कालवा</option><option value="drip">ठिबक सिंचन</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>🌡️ सरासरी तापमान (°C)</label><input type="number" class="fc" id="aTemp" placeholder="उदा. 28" min="10" max="45" /></div>
+              <div class="fg"><label>💧 पाऊस (mm/वर्ष)</label><input type="number" class="fc" id="aRain" placeholder="उदा. 700" /></div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>📐 जमीन क्षेत्र (एकर)</label><input type="number" class="fc" id="aArea" placeholder="उदा. 5" /></div>
+              <div class="fg"><label>💰 बजेट</label>
+                <select class="fc" id="aBudget">
+                  <option value="low">कमी (₹5,000–₹15,000/एकर)</option>
+                  <option value="medium">मध्यम (₹15,000–₹35,000/एकर)</option>
+                  <option value="high">जास्त (₹35,000+/एकर)</option>
+                </select>
+              </div>
+            </div>
+            <button class="sub-btn" onclick="getFullAdvisory()"><i class="fas fa-brain"></i>AI सल्ला मिळवा</button>
+            <div class="adv-result" id="aResult"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>📊 ML पिक अंदाज</h3></div>
+          <div class="card-body" style="text-align:center">
+            <div style="font-size:48px;margin:14px 0">🤖</div>
+            <p style="font-size:13px;color:var(--gray);margin-bottom:14px">Machine Learning मॉडेल तुमच्यासाठी सर्वोत्तम पिक सुचवेल</p>
+            <button class="btn-primary" style="width:100%;justify-content:center" onclick="window.open('https://unseasonable-rain-crop-advisory-system.streamlit.app/')">
+              <i class="fas fa-robot"></i>ML Model वापरा
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📱 SMS सेवा</h3></div>
+          <div class="card-body">
+            <div style="background:#FFF8E1;border:1px solid var(--gold);border-radius:7px;padding:10px;font-size:12.5px;color:#5a4200;margin-bottom:10px">
+              <i class="fas fa-info-circle"></i> SMS: <strong>KRISHI [जिल्हा] [माती]</strong> → <strong>7710-000-000</strong>
+            </div>
+            <button class="btn-outline" style="width:100%;justify-content:center;border-color:var(--green);color:var(--green);background:transparent" onclick="alert('Android app येत आहे!')">
+              <i class="fab fa-android"></i>Android App डाउनलोड
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PRICES PAGE ══════════════ -->
+<div class="pg" id="pg-prices">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>महाराष्ट्र बाजार भाव</h2><span class="tag">आजचे दर</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <select class="fc" style="width:auto" id="mktFilter" onchange="filterPrices()">
+        <option value="all">सर्व बाजार</option>
+        <option value="pune">पुणे APMC</option><option value="nashik">नाशिक APMC</option>
+        <option value="mumbai">मुंबई APMC</option><option value="nagpur">नागपूर APMC</option>
+        <option value="latur">लातूर APMC</option><option value="akola">अकोला APMC</option>
+      </select>
+      <select class="fc" style="width:auto" id="ctFilter" onchange="filterPrices()">
+        <option value="all">सर्व पिके</option>
+        <option value="cereal">धान्य</option><option value="vegetable">भाजीपाला</option>
+        <option value="fruit">फळे</option><option value="oilseed">तेलबिया</option>
+        <option value="cash">नगदी पिके</option>
+      </select>
+      <button class="sub-btn" style="width:auto;padding:9px 16px" onclick="loadLivePrices()"><i class="fas fa-sync-alt"></i>रिफ्रेश</button>
+    </div>
+    <div class="card">
+      <div style="overflow-x:auto">
+        <table class="ptable" id="priceTable">
+          <thead><tr><th>पिक</th><th>बाजार</th><th>किमान (₹/क्विं.)</th><th>कमाल (₹/क्विं.)</th><th>सरासरी (₹/क्विं.)</th><th>MSP (₹/क्विं.)</th><th>बदल</th><th>अद्यतन</th></tr></thead>
+          <tbody id="ptBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px 16px;background:var(--green-l);border-radius:8px;border-left:4px solid var(--green);font-size:13px">
+      <strong>📌 नोट:</strong> हे भाव अनुमानित आहेत. अधिकृत भावांसाठी <a href="https://agmarknet.gov.in" target="_blank" style="color:var(--green);font-weight:700">agmarknet.gov.in</a> पहा.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ POLICIES PAGE ══════════════ -->
+<div class="pg" id="pg-policies">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>शेतकरी योजना</h2><span class="tag">2024-25</span></div>
+    <div class="sch-grid">
+      <div class="sch-card" onclick="openScheme('pmkisan')"><div class="sch-icon">💰</div><h4>PM-KISAN</h4><p>वार्षिक ₹6,000 थेट बँक खात्यात. 3 हप्ते × ₹2,000.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('fasal-bima')"><div class="sch-icon">🛡️</div><h4>पीएम पीक विमा (PMFBY)</h4><p>नैसर्गिक आपत्ती, कीड-रोग — कमी प्रीमियममध्ये संरक्षण.</p><span class="sch-tag">केंद्र + राज्य</span><span class="sch-new">अर्ज सुरू</span></div>
+      <div class="sch-card" onclick="openScheme('pkvy')"><div class="sch-icon">🌱</div><h4>परंपरागत कृषी विकास (PKVY)</h4><p>सेंद्रिय शेतीसाठी 3 वर्षांत ₹50,000/हेक्टर अनुदान.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('kcc')"><div class="sch-icon">💳</div><h4>किसान क्रेडिट कार्ड (KCC)</h4><p>4% व्याजदरावर ₹3 लाखपर्यंत अल्पमुदत कर्ज.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('magel-tyala')"><div class="sch-icon">💧</div><h4>मागेल त्याला शेततळे</h4><p>100% अनुदानावर शेततळे निर्मिती. SC/ST प्राधान्य.</p><span class="sch-tag">राज्य सरकार</span><span class="sch-new">नवीन</span></div>
+      <div class="sch-card" onclick="openScheme('solar-pump')"><div class="sch-icon">☀️</div><h4>मुख्यमंत्री सौर कृषी पंप</h4><p>95% सबसिडीवर सोलर पंप. शेतकऱ्यांना दिवसा सिंचन.</p><span class="sch-tag">राज्य सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('drip-subsidy')"><div class="sch-icon">🌊</div><h4>ठिबक/तुषार सिंचन अनुदान</h4><p>55-80% अनुदान. पाण्याची 40-60% बचत.</p><span class="sch-tag">राज्य + केंद्र</span></div>
+      <div class="sch-card" onclick="openScheme('e-nam')"><div class="sch-icon">🏪</div><h4>e-NAM (राष्ट्रीय कृषी बाजार)</h4><p>ऑनलाइन मंडीद्वारे थेट विक्री. योग्य बाजारभाव.</p><span class="sch-tag">केंद्र सरकार</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SOIL PAGE ══════════════ -->
+<div class="pg" id="pg-soil">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>माती माहिती</h2><span class="tag">Maharashtra</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>🪨 माती प्रकार निवडा</h3></div>
+        <div class="card-body">
+          <div class="soil-grid">
+            <div class="soil-btn" onclick="showSoil('black',this)"><div class="si">⬛</div><div class="sn">काळी माती</div></div>
+            <div class="soil-btn" onclick="showSoil('red',this)"><div class="si">🟥</div><div class="sn">लाल माती</div></div>
+            <div class="soil-btn" onclick="showSoil('lateritic',this)"><div class="si">🟫</div><div class="sn">लॅटेराइट माती</div></div>
+            <div class="soil-btn" onclick="showSoil('alluvial',this)"><div class="si">🟨</div><div class="sn">गाळाची माती</div></div>
+          </div>
+          <div class="soil-out" id="soilOut"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>📍 जिल्हानुसार माती</h3></div>
+        <div class="card-body" style="font-size:13px;line-height:2.1">
+          <div><strong style="color:var(--green-d)">काळी माती:</strong> विदर्भ, मराठवाडा (नागपूर, अकोला, लातूर, सोलापूर)</div>
+          <div><strong style="color:var(--green-d)">लाल माती:</strong> पश्चिम महाराष्ट्र (पुणे, सातारा, कोल्हापूर)</div>
+          <div><strong style="color:var(--green-d)">लॅटेराइट माती:</strong> कोकण (रत्नागिरी, सिंधुदुर्ग, रायगड)</div>
+          <div><strong style="color:var(--green-d)">गाळाची माती:</strong> नदी खोरे (नाशिक, जळगाव, धुळे)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CALENDAR PAGE ══════════════ -->
+<div class="pg" id="pg-calendar">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>शेती दिनदर्शिका</h2><span class="tag">2025-26</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>📅 हंगामनिहाय कामे</h3></div>
+        <div class="card-body"><div id="calList"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>🌾 हंगाम माहिती</h3></div>
+        <div class="card-body" style="font-size:13px">
+          <div style="margin-bottom:12px;padding:12px;background:var(--green-l);border-radius:7px"><div style="font-weight:700;color:var(--green-d);margin-bottom:3px">🌧️ खरीप (जून - ऑक्टोबर)</div><div>सोयाबीन, कापूस, ज्वारी, बाजरी, तूर, मूग, उडीद</div></div>
+          <div style="margin-bottom:12px;padding:12px;background:#FFF3E8;border-radius:7px"><div style="font-weight:700;color:var(--saffron);margin-bottom:3px">❄️ रब्बी (नोव्हेंबर - मार्च)</div><div>गहू, हरभरा, मका, करडई, ज्वारी (रब्बी)</div></div>
+          <div style="padding:12px;background:#FFF8E1;border-radius:7px"><div style="font-weight:700;color:var(--gold);margin-bottom:3px">☀️ उन्हाळी (मार्च - जून)</div><div>भाजीपाला, मूग, उडीद, तीळ, काकडी</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PEST ALERTS (NEW) ══════════════ -->
+<div class="pg" id="pg-pests">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>कीड व रोग सतर्कता</h2><span class="tag" style="background:#FEE2E2;color:#dc2626">Active Alerts</span></div>
+    <div class="main-grid">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:12px" id="pestList"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>🛡️ प्रतिबंधात्मक उपाय</h3></div>
+          <div class="card-body" style="font-size:13px;display:flex;flex-direction:column;gap:10px">
+            <div style="padding:10px;background:var(--green-l);border-radius:7px"><strong style="color:var(--green-d)">जैविक उपाय:</strong><br>निंबोळी अर्क (5%) फवारणी. ट्रायकोडर्मा वापरा.</div>
+            <div style="padding:10px;background:#FFF3E8;border-radius:7px"><strong style="color:var(--saffron)">देखरेख:</strong><br>पिवळे/निळे चिकट सापळे. फेरोमोन सापळे वापरा.</div>
+            <div style="padding:10px;background:#FFF8E1;border-radius:7px"><strong style="color:var(--gold)">संपर्क:</strong><br>जवळच्या कृषी सेवा केंद्राला भेट द्या.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📞 कीटक नियंत्रण हेल्पलाइन</h3></div>
+          <div class="card-body" style="text-align:center;padding:20px">
+            <div style="font-size:36px;margin-bottom:8px">🌿</div>
+            <div style="font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--green-d)">1800-180-1551</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:6px">कृषी तज्ञाशी बोला</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LOAN CALCULATOR (NEW) ══════════════ -->
+<div class="pg" id="pg-loans">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>कृषी कर्ज कॅल्क्युलेटर</h2><span class="tag">EMI Calculator</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>🏦 कर्ज तपशील</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>कर्जाचा प्रकार</label>
+              <select class="fc" id="loanType" onchange="updateLoanRate()">
+                <option value="4">किसान क्रेडिट कार्ड (4%)</option>
+                <option value="7">कृषी मुदत कर्ज (7%)</option>
+                <option value="9">भूमी विकास बँक (9%)</option>
+                <option value="10.5">व्यापारी बँक कर्ज (10.5%)</option>
+              </select>
+            </div>
+            <div class="fg"><label>कर्ज रक्कम (₹)</label><input type="number" class="fc" id="loanAmt" placeholder="उदा. 100000" oninput="calcLoan()"/></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>कर्ज कालावधी (वर्षे)</label>
+              <select class="fc" id="loanTerm" onchange="calcLoan()">
+                <option value="1">1 वर्ष</option><option value="2">2 वर्षे</option>
+                <option value="3">3 वर्षे</option><option value="5">5 वर्षे</option>
+                <option value="7">7 वर्षे</option><option value="10">10 वर्षे</option>
+              </select>
+            </div>
+            <div class="fg"><label>व्याज दर (%)</label><input type="number" class="fc" id="loanRate" placeholder="4" value="4" oninput="calcLoan()"/></div>
+          </div>
+          <button class="sub-btn" onclick="calcLoan()"><i class="fas fa-calculator"></i>EMI मोजा</button>
+          <div class="loan-calc" id="loanResult" style="display:none;margin-top:14px">
+            <div style="font-size:14px;font-weight:700;color:var(--green-d);margin-bottom:10px">📊 कर्ज विश्लेषण</div>
+            <div class="loan-result">
+              <div class="loan-row"><span>मासिक EMI</span><span id="lEMI" style="color:var(--saffron);font-weight:800;font-size:18px">--</span></div>
+              <div class="loan-row"><span>एकूण परतफेड</span><span id="lTotal">--</span></div>
+              <div class="loan-row"><span>व्याज रक्कम</span><span id="lInterest">--</span></div>
+              <div class="loan-row"><span>मूळ रक्कम</span><span id="lPrincipal">--</span></div>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--gray)">💡 वेळेत परतफेड केल्यास KCC वर 3% सूट मिळते.</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>📋 बँक संपर्क</h3></div>
+          <div class="card-body" style="font-size:13px;display:flex;flex-direction:column;gap:8px">
+            <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 SBI Agri Loans</div><div style="font-size:12px;color:var(--gray)">1800-11-2211</div></div>
+            <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 NABARD</div><div style="font-size:12px;color:var(--gray)">1800-22-0000</div></div>
+            <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 Maharashtra Gramin Bank</div><div style="font-size:12px;color:var(--gray)">07162-250411</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📌 KCC फायदे</h3></div>
+          <div class="card-body" style="font-size:13px">
+            <ul style="padding-left:16px;display:flex;flex-direction:column;gap:7px">
+              <li>4% प्रभावी व्याज (वेळेत परतफेडीवर)</li>
+              <li>₹3 लाखपर्यंत विनातारण कर्ज</li>
+              <li>फसल विमा समाविष्ट</li>
+              <li>ATM/Debit Card सुविधा</li>
+              <li>3 वर्षांत नूतनीकरण</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MANDI LOCATOR (NEW) ══════════════ -->
+<div class="pg" id="pg-mandi">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>मंडी शोधा</h2><span class="tag">APMC Locator</span></div>
+    <div class="main-grid">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-hd"><h3>🔍 मंडी शोध</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>जिल्हा</label>
+                <select class="fc" id="mandiDist" onchange="filterMandis()">
+                  <option value="all">सर्व जिल्हे</option>
+                  <option value="pune">पुणे</option><option value="nashik">नाशिक</option>
+                  <option value="nagpur">नागपूर</option><option value="latur">लातूर</option>
+                  <option value="aurangabad">औरंगाबाद</option>
+                </select>
+              </div>
+              <div class="fg"><label>पिक</label>
+                <select class="fc" id="mandiCrop" onchange="filterMandis()">
+                  <option value="all">सर्व पिके</option>
+                  <option value="soybean">सोयाबीन</option><option value="cotton">कापूस</option>
+                  <option value="onion">कांदा</option><option value="wheat">गहू</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mandi-list" id="mandiList"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>📋 मंडी माहिती</h3></div>
+          <div class="card-body" style="font-size:13px">
+            <div style="padding:10px;background:var(--green-l);border-radius:7px;margin-bottom:8px"><strong>APMC म्हणजे काय?</strong><br>Agricultural Produce Market Committee — शेतकऱ्यांसाठी सुरक्षित व्यापार मंच</div>
+            <div style="font-size:12.5px;display:flex;flex-direction:column;gap:6px">
+              <div>✅ योग्य वजन मापन</div>
+              <div>✅ पारदर्शक किंमत निर्धारण</div>
+              <div>✅ त्वरित पेमेंट</div>
+              <div>✅ शासनमान्य व्यापारी</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📞 APMC हेल्पलाइन</h3></div>
+          <div class="card-body" style="text-align:center;padding:16px">
+            <div style="font-size:20px;font-family:var(--font-display);font-weight:800;color:var(--green-d)">1800-233-0099</div>
+            <div style="font-size:12px;color:var(--gray);margin-top:5px">APMC Maharashtra Helpline</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SCHEME MODAL ══════════════ -->
+<div class="modal-ov" id="schModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div><h3 id="modTitle">योजना</h3><p id="modSub">कृषि योजना</p></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body"><div id="modContent"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════ CHATBOT ══════════════ -->
+<button class="chat-fab" onclick="toggleChat()">
+  <i class="fas fa-comments"></i>
+  <span class="fbadge">1</span>
+</button>
+
+<div class="chat-win" id="chatWin">
+  <div class="chat-hd">
+    <div class="chat-av">🌾</div>
+    <div class="chat-hi">
+      <h4>कृषिमित्र AI</h4>
+      <p><span class="chat-online"></span>ऑनलाइन | मराठी / English</p>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-tabs">
+    <button class="ctab act" onclick="switchTab('chat',this)">💬 चॅट</button>
+    <button class="ctab" onclick="switchTab('faq',this)">❓ FAQ</button>
+    <button class="ctab" onclick="switchTab('prices',this)">📊 भाव</button>
+  </div>
+
+  <!-- CHAT TAB -->
+  <div id="tab-chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="voice-status" id="voiceStatus">🎙️ ऐकत आहे... बोला</div>
+    <div class="qrs" id="quickReps">
+      <button class="qr" onclick="sqr('आजचे बाजार भाव सांगा')">📈 बाजार भाव</button>
+      <button class="qr" onclick="sqr('PM-KISAN योजना काय आहे?')">💰 PM-KISAN</button>
+      <button class="qr" onclick="sqr('सोयाबीन पिकाचा सल्ला द्या')">🌱 पिक सल्ला</button>
+      <button class="qr" onclick="sqr('पिक विमा कसा काढावा?')">🛡️ पिक विमा</button>
+    </div>
+    <div class="chat-inp-row">
+      <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="आवाजाने बोला">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <input class="chat-inp" id="chatInp" placeholder="मराठी / English मध्ये टाइप करा..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- FAQ TAB -->
+  <div id="tab-faq" style="display:none;flex:1;overflow-y:auto;padding:12px">
+    <div id="faqList"></div>
+  </div>
+
+  <!-- PRICES TAB -->
+  <div id="tab-prices" style="display:none;flex:1;overflow-y:auto;padding:12px">
+    <div style="font-size:12px;color:var(--gray);margin-bottom:8px">आजचे प्रमुख भाव:</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="background:var(--green-d);color:#fff"><th style="padding:7px;text-align:left">पिक</th><th style="padding:7px;text-align:right">भाव</th><th style="padding:7px;text-align:right">बदल</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">🌿 सोयाबीन</td><td style="padding:7px;text-align:right">₹4,100</td><td style="padding:7px;text-align:right;color:#dc2626">▼ 2.1%</td></tr>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">☕ कापूस</td><td style="padding:7px;text-align:right">₹6,500</td><td style="padding:7px;text-align:right;color:#dc2626">▼ 0.8%</td></tr>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">🧅 कांदा</td><td style="padding:7px;text-align:right">₹2,800</td><td style="padding:7px;text-align:right;color:#16a34a">▲ 5.3%</td></tr>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">🌾 गहू</td><td style="padding:7px;text-align:right">₹2,275</td><td style="padding:7px;text-align:right;color:#16a34a">▲ 1.2%</td></tr>
+        <tr><td style="padding:7px">🌽 ज्वारी</td><td style="padding:7px;text-align:right">₹3,200</td><td style="padding:7px;text-align:right;color:#16a34a">▲ 0.9%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:11.5px;color:var(--gray)">📌 agmarknet.gov.in वर अधिकृत भाव पहा</div>
+  </div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <div class="ft-top">
+    <div class="fb-brand">
+      <h5>🌾 कृषिमित्र</h5>
+      <p>हवामान, माती आणि बाजारभाव यांच्यावर आधारित अचूक पिक सल्ला प्रणाली. शेतकऱ्यांसाठी, शेतकऱ्यांनी.</p>
+      <div class="fb-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div>
+      <h5>त्वरित दुवे</h5>
+      <ul>
+        <li><a href="#" onclick="goTo('advisory');return false">पिक सल्ला</a></li>
+        <li><a href="#" onclick="goTo('prices');return false">बाजार भाव</a></li>
+        <li><a href="#" onclick="goTo('policies');return false">शासन योजना</a></li>
+        <li><a href="#" onclick="goTo('soil');return false">माती माहिती</a></li>
+        <li><a href="#" onclick="goTo('pests');return false">कीड सतर्कता</a></li>
+        <li><a href="#" onclick="goTo('loans');return false">कर्ज कॅल्क्युलेटर</a></li>
+        <li><a href="#" onclick="goTo('mandi');return false">मंडी शोधा</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>महत्त्वाचे दुवे</h5>
+      <ul>
+        <li><a href="https://mahadbt.maharashtra.gov.in" target="_blank">MahaDbt Portal</a></li>
+        <li><a href="https://agmarknet.gov.in" target="_blank">Agmarknet</a></li>
+        <li><a href="https://pmfby.gov.in" target="_blank">PM Fasal Bima</a></li>
+        <li><a href="https://pmkisan.gov.in" target="_blank">PM-KISAN</a></li>
+        <li><a href="https://enam.gov.in" target="_blank">e-NAM</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>संपर्क</h5>
+      <ul>
+        <li><a href="mailto:vedantthorat200@gmail.com">📧 vedantthorat200@gmail.com</a></li>
+        <li><a href="tel:18001801551">📞 1800-180-1551 (टोल-फ्री)</a></li>
+        <li><a href="#">📍 पुणे, महाराष्ट्र</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <div class="inner">
+      <div>© <span id="fyear"></span> कृषिमित्र | Smart Farmer Portal | Developed by Vedant Thorat</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5)">Made with ❤️ for Maharashtra Farmers</div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// ──────── LANGUAGE ────────
+const LD = {
+  mr:{brandTitle:"कृषिमित्र",brandSub:"हवामान आधारित पिक सल्ला प्रणाली",heroTitle:"महाराष्ट्रातील शेतकऱ्यांचा विश्वासू मित्र 🌿",heroSub:"हवामान, माती आणि बाजारभाव यावर आधारित अचूक पिक सल्ला — मराठीत",hb1:"पिक सल्ला मिळवा",hb2:"आजचे बाजार भाव",hb3:"शासन योजना",wxTitle:"आजचे हवामान",alert:"खरीप हंगाम 2025 नोंदणी सुरू। PM-KISAN 19वा हप्ता लवकरच येणार।",chatWelcome:"नमस्कार! 🙏 मी कृषिमित्र AI आहे. पिक सल्ला, बाजार भाव, योजना — कशाबद्दलही विचारा!",home:"मुख्यपृष्ठ",advisory:"पिक सल्ला",prices:"बाजार भाव",policies:"शासन योजना",soil:"माती माहिती",calendar:"दिनदर्शिका",pests:"कीड सतर्कता",loans:"कर्ज कॅल्क्युलेटर",mandi:"मंडी शोधा"},
+  en:{brandTitle:"KrishiMitra",brandSub:"Weather-Based Crop Advisory System",heroTitle:"Trusted Partner of Maharashtra Farmers 🌿",heroSub:"Accurate crop advisory based on weather, soil and market prices",hb1:"Get Crop Advisory",hb2:"Today's Market Prices",hb3:"Government Schemes",wxTitle:"Today's Weather",alert:"Kharif Season 2025 registration is open. PM-KISAN 19th installment coming soon.",chatWelcome:"Hello! 🙏 I'm KrishiMitra AI. Ask about crop advisory, market prices, or schemes!",home:"Home",advisory:"Crop Advisory",prices:"Market Prices",policies:"Govt. Schemes",soil:"Soil Info",calendar:"Farm Calendar",pests:"Pest Alerts",loans:"Loan Calculator",mandi:"Find Mandi"},
+  hi:{brandTitle:"कृषिमित्र",brandSub:"मौसम आधारित फसल सलाह प्रणाली",heroTitle:"महाराष्ट्र के किसानों का विश्वसनीय मित्र 🌿",heroSub:"मौसम, मिट्टी और बाजार भाव पर आधारित सटीक फसल सलाह",hb1:"फसल सलाह लें",hb2:"आज के बाजार भाव",hb3:"सरकारी योजनाएं",wxTitle:"आज का मौसम",alert:"खरीफ 2025 पंजीकरण चल रहा है। PM-KISAN 19वीं किस्त जल्द आएगी।",chatWelcome:"नमस्ते! 🙏 मैं कृषिमित्र AI हूं। फसल सलाह, बाजार भाव, योजनाओं के बारे में पूछें!",home:"मुख्य पृष्ठ",advisory:"फसल सलाह",prices:"बाजार भाव",policies:"सरकारी योजना",soil:"मिट्टी जानकारी",calendar:"कृषि कैलेंडर",pests:"कीट चेतावनी",loans:"ऋण कैलकुलेटर",mandi:"मंडी खोजें"}
+};
+let curLang='mr';
+function setLang(l){
+  curLang=l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${l}')"]`)?.classList.add('active');
+  const d=LD[l]||LD.mr;
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  s('brandTitle',d.brandTitle);s('brandSub',d.brandSub);s('heroTitle',d.heroTitle);
+  s('heroSub',d.heroSub);s('hb1',d.hb1);s('hb2',d.hb2);s('hb3',d.hb3);
+  s('wxTitle',d.wxTitle);s('alertText',d.alert);
+  ['home','advisory','prices','policies','soil','calendar','pests','loans','mandi'].forEach(k=>{
+    document.querySelectorAll(`[data-key="${k}"]`).forEach(el=>el.textContent=d[k]);
+  });
+}
+
+// ──────── NAVIGATION ────────
+function goTo(page){
+  document.querySelectorAll('.pg').forEach(s=>s.classList.remove('act'));
+  document.querySelectorAll('.nl').forEach(l=>l.classList.remove('act'));
+  document.getElementById('pg-'+page)?.classList.add('act');
+  document.getElementById('nav-'+page)?.classList.add('act');
+  const d=LD[curLang];
+  const c=document.getElementById('bcrumb');
+  if(c)c.textContent=page!=='home'?' › '+(d[page]||page):'';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ──────── WEATHER ────────
+const OWM='5fa406d45112a1093a86b5b417f0bc89';
+const WXICO={'01d':'☀️','01n':'🌙','02d':'⛅','02n':'⛅','03d':'☁️','03n':'☁️','04d':'☁️','04n':'☁️','09d':'🌧️','09n':'🌧️','10d':'🌦️','10n':'🌧️','11d':'⛈️','11n':'⛈️','13d':'❄️','13n':'❄️','50d':'🌫️','50n':'🌫️'};
+const DAYS=['रवि','सोम','मंगळ','बुध','गुरु','शुक्र','शनि'];
+
+function fetchWX(lat,lon){
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OWM}&units=metric`)
+    .then(r=>r.json()).then(d=>{
+      const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+      s('wxTemp',Math.round(d.main.temp)+'°');
+      s('wxDesc',d.weather[0].description);
+      s('wxCity',d.name+', Maharashtra');
+      s('wxLoc',d.name);
+      s('wxHum',d.main.humidity+'%');
+      s('wxWind',Math.round(d.wind.speed*3.6)+' km/h');
+      s('wxFeels',Math.round(d.main.feels_like)+'°C');
+      s('wxVis',(d.visibility/1000).toFixed(1)+' km');
+      s('wxUV','--');
+      s('wxPres',d.main.pressure+' hPa');
+      s('hTemp',Math.round(d.main.temp)+'°C');
+      s('hCity',d.name);
+      document.getElementById('wxIco').textContent=WXICO[d.weather[0].icon]||'🌤️';
+    }).catch(()=>{});
+}
+
+function fetchFC(lat,lon){
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OWM}&units=metric`)
+    .then(r=>r.json()).then(d=>{
+      const days=d.list.filter(i=>i.dt_txt.includes('12:00:00')).slice(0,5);
+      const row=document.getElementById('fcRow');
+      row.innerHTML=days.map(day=>{
+        const date=new Date(day.dt*1000);
+        return `<div class="fc-day"><div class="dn">${DAYS[date.getDay()]}</div><div style="font-size:20px">${WXICO[day.weather[0].icon]||'🌤️'}</div><div class="ft">${Math.round(day.main.temp)}°</div><div class="fr">🌧️${Math.round(day.pop*100)}%</div></div>`;
+      }).join('');
+    }).catch(()=>{});
+}
+
+navigator.geolocation?.getCurrentPosition(
+  p=>{fetchWX(p.coords.latitude,p.coords.longitude);fetchFC(p.coords.latitude,p.coords.longitude)},
+  ()=>{fetchWX(18.5204,73.8567);fetchFC(18.5204,73.8567)}
+);
+
+// ──────── PRICE CHART ────────
+const PRICE_HIST={
+  soybean:[3980,4050,4020,4100,4080,4120,4100],
+  cotton:[6400,6450,6480,6520,6500,6490,6500],
+  onion:[2600,2650,2700,2750,2780,2800,2800],
+  wheat:[2240,2250,2260,2270,2265,2275,2275]
+};
+let priceChart=null;
+function updateChart(){
+  const crop=document.getElementById('chartCrop')?.value||'soybean';
+  const labels=['6 दिवसांपूर्वी','5','4','3','2','काल','आज'];
+  const data=PRICE_HIST[crop];
+  const names={soybean:'सोयाबीन',cotton:'कापूस',onion:'कांदा',wheat:'गहू'};
+  if(priceChart){priceChart.destroy()}
+  const ctx=document.getElementById('priceChart');
+  if(!ctx)return;
+  priceChart=new Chart(ctx,{
+    type:'line',
+    data:{labels,datasets:[{label:names[crop]+' (₹/क्विं.)',data,borderColor:'#1B6B3A',backgroundColor:'rgba(27,107,58,0.1)',borderWidth:2,pointBackgroundColor:'#1B6B3A',pointRadius:4,tension:.3,fill:true}]},
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'₹'+c.parsed.y.toLocaleString()+'/क्विं.'}}},scales:{y:{ticks:{callback:v=>'₹'+v.toLocaleString()},grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}
+  });
+}
+setTimeout(updateChart,500);
+
+// ──────── CROP ADVISORY ────────
+const ADV={
+  black:{kharif:['कापूस 🌿','सोयाबीन 🌾','ज्वारी 🌽','तूर 🫘'],rabi:['गहू 🌾','हरभरा 🫘','करडई 🌻'],summer:['भाजीपाला 🥬','मूग 🫘']},
+  red:{kharif:['भुईमूग 🥜','बाजरी 🌾','मका 🌽'],rabi:['गहू 🌾','हरभरा 🫘'],summer:['तीळ 🌱','भाजीपाला 🥬']},
+  lateritic:{kharif:['काजू 🌰','नाचणी 🌾','वरई'],rabi:['भाजीपाला 🥬'],summer:['आंबा 🥭']},
+  alluvial:{kharif:['धान 🌾','मका 🌽','ऊस 🎋'],rabi:['गहू 🌾','बटाटा 🥔'],summer:['भाजीपाला 🥬']}
+};
+const TIPS={
+  black:'काळी माती ओलावा टिकवते. ठिबक सिंचन वापरा. जून मध्यात पेरणी करा.',
+  red:'मल्चिंग करा. सेंद्रिय खते भरपूर घाला. उतारावर पिके घेऊ नका.',
+  lateritic:'चुना टाका. सेंद्रिय शेती करा. काजू, नारळाची बागायती करा.',
+  alluvial:'पिकांची फेरपालट करा. जास्त सिंचन टाळा. नायट्रोजन खत माफक द्या.'
+};
+
+function getQAdvisory(){
+  const dist=document.getElementById('qDist').value;
+  const soil=document.getElementById('qSoil').value;
+  const season=document.getElementById('qSeason').value;
+  if(!dist||!soil){alert('कृपया जिल्हा आणि माती प्रकार निवडा');return}
+  showAdvisory('qResult',soil,season,dist);
+}
+function getFullAdvisory(){
+  const soil=document.getElementById('aSoil').value;
+  const season=document.getElementById('aSeason').value;
+  const dist=document.getElementById('aDist').value;
+  if(!soil){alert('कृपया माती प्रकार निवडा');return}
+  showAdvisory('aResult',soil,season,dist||'महाराष्ट्र');
+}
+function showAdvisory(rid,soil,season,district){
+  const crops=ADV[soil]?.[season]||['ज्वारी 🌾','बाजरी 🌾'];
+  const tip=TIPS[soil]||'';
+  const sn=season==='kharif'?'खरीप':season==='rabi'?'रब्बी':'उन्हाळी';
+  const el=document.getElementById(rid);
+  el.innerHTML=`<h4>✅ ${district} — ${sn} पिक सल्ला</h4>
+    <p style="font-size:12px;color:var(--green-d);margin-bottom:8px">शिफारस केलेली पिके:</p>
+    <div class="crop-chips">${crops.map(c=>`<span class="crop-chip">${c}</span>`).join('')}</div>
+    <p style="margin-top:10px;font-size:13px;background:#fff;padding:9px 12px;border-radius:6px;border:1px solid var(--gray-l)">💡 <strong>सल्ला:</strong> ${tip}</p>`;
+  el.classList.add('show');
+}
+
+// ──────── PRICES TABLE ────────
+const PRICES=[
+  {crop:'सोयाबीन',type:'oilseed',market:'latur',mktN:'लातूर APMC',min:3900,max:4300,avg:4100,msp:4600,chg:-2.1},
+  {crop:'कापूस',type:'cash',market:'akola',mktN:'अकोला APMC',min:6200,max:6800,avg:6500,msp:6620,chg:-0.8},
+  {crop:'कांदा',type:'vegetable',market:'nashik',mktN:'नाशिक APMC',min:2400,max:3200,avg:2800,msp:'-',chg:5.3},
+  {crop:'गहू',type:'cereal',market:'pune',mktN:'पुणे APMC',min:2150,max:2400,avg:2275,msp:2275,chg:1.2},
+  {crop:'ज्वारी',type:'cereal',market:'pune',mktN:'पुणे APMC',min:3000,max:3400,avg:3200,msp:3180,chg:0.9},
+  {crop:'बाजरी',type:'cereal',market:'nashik',mktN:'नाशिक APMC',min:2300,max:2700,avg:2500,msp:2500,chg:0},
+  {crop:'मका',type:'cereal',market:'pune',mktN:'पुणे APMC',min:1800,max:2100,avg:1950,msp:2090,chg:2.1},
+  {crop:'भुईमूग',type:'oilseed',market:'nagpur',mktN:'नागपूर APMC',min:5600,max:6100,avg:5850,msp:6377,chg:1.8},
+  {crop:'धान',type:'cereal',market:'nagpur',mktN:'नागपूर APMC',min:2100,max:2266,avg:2183,msp:2183,chg:0},
+  {crop:'तूर',type:'cereal',market:'latur',mktN:'लातूर APMC',min:6500,max:7200,avg:6850,msp:7000,chg:-1.5},
+  {crop:'टोमॅटो',type:'vegetable',market:'pune',mktN:'पुणे APMC',min:800,max:1600,avg:1200,msp:'-',chg:-8.3},
+  {crop:'आंबा',type:'fruit',market:'mumbai',mktN:'मुंबई APMC',min:3000,max:8000,avg:5000,msp:'-',chg:3.2},
+  {crop:'हरभरा',type:'cereal',market:'latur',mktN:'लातूर APMC',min:5000,max:5600,avg:5300,msp:5440,chg:0.6},
+  {crop:'उसाचा रस',type:'cash',market:'pune',mktN:'पुणे APMC',min:3100,max:3400,avg:3250,msp:3150,chg:0.4},
+];
+
+function renderPrices(data){
+  const tb=document.getElementById('ptBody');
+  if(!tb)return;
+  tb.innerHTML=data.map(r=>`<tr>
+    <td><strong>${r.crop}</strong></td>
+    <td><span class="mkt-badge">${r.mktN}</span></td>
+    <td>₹${r.min.toLocaleString()}</td>
+    <td>₹${r.max.toLocaleString()}</td>
+    <td><strong>₹${r.avg.toLocaleString()}</strong></td>
+    <td>${r.msp!=='-'?`<span class="msp-badge">MSP ₹${r.msp.toLocaleString()}</span>`:'—'}</td>
+    <td class="${r.chg>0?'pu':r.chg<0?'pd':'ps'}">${r.chg>0?'▲':r.chg<0?'▼':'—'} ${Math.abs(r.chg)}%</td>
+    <td style="font-size:11px;color:#9CA3AF">${new Date().toLocaleDateString('mr-IN')}</td>
+  </tr>`).join('');
+}
+
+function filterPrices(){
+  const mkt=document.getElementById('mktFilter')?.value||'all';
+  const ct=document.getElementById('ctFilter')?.value||'all';
+  let f=PRICES;
+  if(mkt!=='all')f=f.filter(r=>r.market===mkt);
+  if(ct!=='all')f=f.filter(r=>r.type===ct);
+  renderPrices(f);
+}
+function loadLivePrices(){
+  const btn=document.querySelector('#pg-prices .sub-btn');
+  if(btn){btn.innerHTML='<span class="spin"></span> लोड होत आहे...';btn.disabled=true}
+  setTimeout(()=>{
+    filterPrices();
+    if(btn){btn.innerHTML='<i class="fas fa-sync-alt"></i> रिफ्रेश';btn.disabled=false}
+  },1200);
+}
+renderPrices(PRICES);
+
+// ──────── SOIL INFO ────────
+const SOIL_DB={
+  black:{name:'काळी माती (Black Cotton Soil)',emoji:'⬛',ph:'7.5 – 8.5',moisture:'जास्त (ओलावा टिकवण्याची क्षमता उत्तम)',fertility:'उच्च — नायट्रोजन, कॅल्शियम समृद्ध',crops:['कापूस','सोयाबीन','ज्वारी','तूर','गहू'],dist:'विदर्भ, मराठवाडा',tips:'खरीप हंगामात खोल नांगरणी करा. ठिबक सिंचन वापरा. जिप्सम खत घाला.'},
+  red:{name:'लाल माती (Red Soil)',emoji:'🟥',ph:'6.0 – 7.5',moisture:'कमी (पाण्याचा निचरा जास्त)',fertility:'मध्यम — लोहयुक्त, ह्युमस कमी',crops:['भुईमूग','बाजरी','मका','ज्वारी'],dist:'पुणे, सातारा, कोल्हापूर',tips:'मल्चिंग करा. कंपोस्ट खत घाला. उतारावर पिके घेऊ नका.'},
+  lateritic:{name:'लॅटेराइट माती (Lateritic Soil)',emoji:'🟫',ph:'5.5 – 6.5',moisture:'कमी (खडकाळ)',fertility:'कमी — ॲसिडिक, खनिजे कमी',crops:['काजू','नाचणी','आंबा','वरई'],dist:'रत्नागिरी, सिंधुदुर्ग, रायगड',tips:'चुना टाका. सेंद्रिय शेती करा. काजू, नारळाची बागायती करा.'},
+  alluvial:{name:'गाळाची माती (Alluvial Soil)',emoji:'🟨',ph:'6.5 – 7.5',moisture:'उत्तम',fertility:'उच्च — सर्व पोषण तत्त्वे समृद्ध',crops:['धान','गहू','मका','ऊस','भाजीपाला'],dist:'नाशिक, जळगाव, धुळे',tips:'पिकांची फेरपालट करा. जास्त पाणी देऊ नका.'}
+};
+
+function showSoil(type,btn){
+  document.querySelectorAll('.soil-btn').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const s=SOIL_DB[type];
+  const o=document.getElementById('soilOut');
+  o.innerHTML=`<h5>${s.emoji} ${s.name}</h5>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;font-size:13px">
+      <div><strong>pH:</strong> ${s.ph}</div>
+      <div><strong>आर्द्रता:</strong> ${s.moisture}</div>
+      <div><strong>सुपीकता:</strong> ${s.fertility}</div>
+      <div><strong>जिल्हे:</strong> ${s.dist}</div>
+    </div>
+    <div style="font-size:13px"><strong>शिफारस पिके:</strong> ${s.crops.join(' | ')}</div>
+    <div style="margin-top:9px;padding:9px;background:#fff;border-radius:5px;border:1px solid var(--gray-l);font-size:13px">💡 ${s.tips}</div>`;
+  o.classList.add('show');
+}
+
+// ──────── CALENDAR ────────
+const CAL=[
+  {month:'एप्रिल - मे',icon:'🌞',act:'उन्हाळी नांगरणी. शेतजमीन तयार करणे. बियाणे निवड व उपचार.'},
+  {month:'जून - जुलै',icon:'🌧️',act:'खरीप पेरणी: सोयाबीन, कापूस, ज्वारी. खत व्यवस्थापन.'},
+  {month:'ऑगस्ट - सप्टेंबर',icon:'🌱',act:'आंतरमशागत. कीड-रोग व्यवस्थापन. तण काढणे.'},
+  {month:'ऑक्टोबर - नोव्हेंबर',icon:'🚜',act:'खरीप काढणी. रब्बी पेरणी तयारी: गहू, हरभरा.'},
+  {month:'डिसेंबर - जानेवारी',icon:'❄️',act:'रब्बी देखभाल: सिंचन, खते. थंडीपासून संरक्षण.'},
+  {month:'फेब्रुवारी - मार्च',icon:'🌾',act:'रब्बी काढणी. उन्हाळी पिके: मूग, उडीद लागवड.'},
+];
+document.getElementById('calList').innerHTML=CAL.map(c=>`<div class="cal-item"><div class="cal-mo">${c.icon} ${c.month}</div><div class="cal-act">${c.act}</div></div>`).join('');
+
+// ──────── PEST ALERTS (NEW) ────────
+const PESTS=[
+  {icon:'🐛',name:'पांढरी माशी (Whitefly)',crop:'कापूस',region:'विदर्भ (अकोला, बुलढाणा, वाशीम)',sev:'high',desc:'पाने पिवळी होतात. मध निर्माण करते. व्हायरस पसरवते.',remedy:'इमिडाक्लोप्रिड 0.3 ml/L फवारणी. पिवळे चिकट सापळे. निंबोळी अर्क वापरा.'},
+  {icon:'🦗',name:'खोडकिडा (Stem Borer)',crop:'ज्वारी / बाजरी',region:'मराठवाडा (औरंगाबाद, लातूर, बीड)',sev:'med',desc:'खोडात शिरतो. पिक वाळते. उत्पादन 30% घटते.',remedy:'फेरोमोन सापळे लावा. कार्बोफ्युरान 3G वापरा. प्रतिरोधक वाण निवडा.'},
+  {icon:'🐌',name:'पिवळा मोझेक व्हायरस',crop:'सोयाबीन',region:'खानदेश (जळगाव, धुळे)',sev:'med',desc:'पाने पिवळी-हिरवी मोझेक दिसतात. रोग पसरतो.',remedy:'पांढरी माशी नियंत्रण करा. रोगग्रस्त झाडे काढा. प्रतिरोधक वाण वापरा.'},
+  {icon:'🐞',name:'पाकोळी (Aphid)',crop:'गहू / हरभरा',region:'पश्चिम महाराष्ट्र (पुणे, सोलापूर)',sev:'low',desc:'पाने वाकतात. रस शोषतात. मध निर्माण करतात.',remedy:'डायमेथोएट 1.5 ml/L फवारणी. सहाय्यक कीटक (Ladybird) जपा.'},
+  {icon:'🦠',name:'करपा (Blight)',crop:'भात / धान',region:'कोकण (रत्नागिरी, रायगड)',sev:'high',desc:'पाने जळल्यासारखी दिसतात. पीक करपते.',remedy:'मॅन्कोझेब 2.5 g/L फवारणी. शेत स्वच्छ ठेवा. बीज प्रक्रिया करा.'},
+];
+
+document.getElementById('pestList').innerHTML=PESTS.map(p=>`
+  <div class="pest-card">
+    <div class="pest-sev ${p.sev}"></div>
+    <div class="pest-icon">${p.icon}</div>
+    <div class="pest-info">
+      <h4>${p.name}</h4>
+      <p><strong>पिक:</strong> ${p.crop} | <strong>क्षेत्र:</strong> ${p.region}</p>
+      <p style="margin-top:4px">${p.desc}</p>
+      <div style="margin-top:8px;padding:8px;background:var(--green-l);border-radius:5px;font-size:12px"><strong>उपाय:</strong> ${p.remedy}</div>
+      <span class="pest-badge pb-${p.sev}">${p.sev==='high'?'उच्च धोका':p.sev==='med'?'मध्यम धोका':'कमी धोका'}</span>
+    </div>
+  </div>
+`).join('');
+
+// ──────── LOAN CALCULATOR (NEW) ────────
+function updateLoanRate(){
+  const sel=document.getElementById('loanType');
+  document.getElementById('loanRate').value=sel?.value||4;
+  calcLoan();
+}
+function calcLoan(){
+  const P=parseFloat(document.getElementById('loanAmt')?.value)||0;
+  const rate=parseFloat(document.getElementById('loanRate')?.value)||4;
+  const years=parseInt(document.getElementById('loanTerm')?.value)||1;
+  const r=rate/12/100;
+  const n=years*12;
+  if(!P){document.getElementById('loanResult').style.display='none';return}
+  const emi=r===0?P/n:P*(r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  const total=emi*n;
+  const interest=total-P;
+  const s=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  s('lEMI','₹'+Math.round(emi).toLocaleString('en-IN'));
+  s('lTotal','₹'+Math.round(total).toLocaleString('en-IN'));
+  s('lInterest','₹'+Math.round(interest).toLocaleString('en-IN'));
+  s('lPrincipal','₹'+Math.round(P).toLocaleString('en-IN'));
+  document.getElementById('loanResult').style.display='block';
+}
+
+// ──────── MANDI LOCATOR (NEW) ────────
+const MANDIS=[
+  {name:'पुणे APMC (गुलटेकडी)',dist:'pune',addr:'गुलटेकडी, पुणे — 411037',crops:['कांदा','टोमॅटो','भाजीपाला'],days:'सोम–शनि',time:'6 AM – 2 PM',icon:'🧅'},
+  {name:'नाशिक APMC (लासलगाव)',dist:'nashik',addr:'लासलगाव, नाशिक',crops:['कांदा','द्राक्षे','टोमॅटो'],days:'दैनंदिन',time:'6 AM – 12 PM',icon:'🧅'},
+  {name:'लातूर APMC',dist:'latur',addr:'लातूर — 413512',crops:['सोयाबीन','तूर','हरभरा'],days:'सोम–शनि',time:'8 AM – 4 PM',icon:'🌿'},
+  {name:'अकोला APMC',dist:'akola',addr:'अकोला — 444001',crops:['कापूस','सोयाबीन'],days:'सोम–शनि',time:'7 AM – 3 PM',icon:'☕'},
+  {name:'नागपूर APMC',dist:'nagpur',addr:'कामठी रोड, नागपूर',crops:['संत्री','कापूस','धान'],days:'दैनंदिन',time:'6 AM – 2 PM',icon:'🍊'},
+  {name:'औरंगाबाद APMC',dist:'aurangabad',addr:'औरंगाबाद — 431001',crops:['सोयाबीन','ज्वारी','बाजरी'],days:'सोम–शनि',time:'7 AM – 3 PM',icon:'🌾'},
+];
+
+function renderMandis(data){
+  document.getElementById('mandiList').innerHTML=data.map(m=>`
+    <div class="mandi-item">
+      <div class="mi-ico">${m.icon}</div>
+      <div>
+        <h4>${m.name}</h4>
+        <p>📍 ${m.addr}</p>
+        <p>🌾 ${m.crops.join(', ')} | ⏰ ${m.time} | 📅 ${m.days}</p>
+      </div>
+      <div class="dist" style="background:var(--green-l);color:var(--green-d);cursor:pointer" onclick="alert('Google Maps लिंक येत आहे')">📍 दिशा</div>
+    </div>
+  `).join('');
+}
+function filterMandis(){
+  const d=document.getElementById('mandiDist')?.value||'all';
+  let f=MANDIS;
+  if(d!=='all')f=f.filter(m=>m.dist===d);
+  renderMandis(f);
+}
+renderMandis(MANDIS);
+
+// ──────── SCHEME MODAL ────────
+const SCHEMES={
+  pmkisan:{title:'PM-KISAN — प्रधानमंत्री किसान सम्मान निधी',sub:'केंद्र सरकार | Direct Benefit Transfer',bens:['वार्षिक ₹6,000 थेट बँक खात्यात (3 हप्ते)','कोणत्याही मध्यस्थाशिवाय हस्तांतरण','सर्व लहान व सीमांत शेतकऱ्यांसाठी','e-KYC अनिवार्य (Jan 2023 पासून)'],elig:['लहान व सीमांत शेतकरी','2 हेक्टरपर्यंत जमीन','आधार कार्ड अनिवार्य','बँक खाते अनिवार्य'],link:'https://pmkisan.gov.in'},
+  'fasal-bima':{title:'PMFBY — प्रधानमंत्री पीक विमा योजना',sub:'केंद्र + राज्य | फसल बीमा',bens:['खरीप: 2% प्रीमियम, रब्बी: 1.5% प्रीमियम','नैसर्गिक आपत्ती, कीड-रोग संरक्षण','पेरणीपूर्व ते कापणीनंतर संरक्षण','थेट बँक खात्यात नुकसानभरपाई'],elig:['सर्व शेतकरी पात्र','KCC धारकांसाठी अनिवार्य','अर्ज: बँक/CSC/pmfby.gov.in','खरीप: जून 30, रब्बी: नोव्हेंबर 30'],link:'https://pmfby.gov.in'},
+  pkvy:{title:'PKVY — परंपरागत कृषी विकास योजना',sub:'केंद्र | सेंद्रिय शेती अनुदान',bens:['3 वर्षांत ₹50,000/हेक्टर अनुदान','Jaivik Kheti प्रमाणपत्र','बाजारपेठ जोडणी सहाय्य','प्रशिक्षण व तांत्रिक सहाय्य'],elig:['गट शेती (20+ एकर क्लस्टर)','50+ शेतकऱ्यांचा समूह','रासायनिक खते बंद करण्याची तयारी'],link:'https://pgsindia-ncof.gov.in'},
+  kcc:{title:'KCC — किसान क्रेडिट कार्ड',sub:'केंद्र सरकार | कृषी कर्ज',bens:['4% व्याजदरावर ₹3 लाखपर्यंत कर्ज','वेळेत परतफेड: 3% सूट','पीक, सिंचन, उपकरणे — सर्वासाठी','ATM/Debit card सुविधा'],elig:['सर्व शेतकरी पात्र','शेतजमीन नावावर असणे आवश्यक','जवळच्या बँकेत अर्ज करा'],link:'https://www.nabard.org'},
+  'magel-tyala':{title:'मागेल त्याला शेततळे',sub:'महाराष्ट्र शासन | जलसंधारण',bens:['100% अनुदानावर शेततळे निर्मिती','SC/ST शेतकऱ्यांना प्रथम प्राधान्य','MGNREGA अंतर्गत मजुरी','पाणी साठवण क्षमता वाढ'],elig:['महाराष्ट्रातील कोणताही शेतकरी','किमान 1 एकर जमीन','aapleadhikar.com वर अर्ज'],link:'https://mahadbt.maharashtra.gov.in'},
+  'solar-pump':{title:'मुख्यमंत्री सौर कृषी पंप योजना',sub:'महाराष्ट्र | Mahavitaran',bens:['5 HP पंपासाठी 95% सबसिडी','दिवसा सिंचन शक्य','वीज बिल नाही','देखभाल: महावितरण'],elig:['2.5 एकरपर्यंत: 3 HP','2.5–5 एकर: 5 HP','अर्ज: Mahavitaran office'],link:'https://mahadiscom.in'},
+  'drip-subsidy':{title:'ठिबक/तुषार सिंचन अनुदान',sub:'NMSA | NHM | केंद्र + राज्य',bens:['55-80% अनुदान (SC/ST: 80%)','पाण्याची 40-60% बचत','उत्पादन 20-30% वाढ','खत खर्च कमी'],elig:['5 हेक्टरपर्यंत जमीन','MahaDBT पोर्टलवर अर्ज'],link:'https://mahadbt.maharashtra.gov.in'},
+  'e-nam':{title:'e-NAM — राष्ट्रीय कृषी बाजार',sub:'केंद्र | ऑनलाइन मंडी',bens:['मध्यस्थांशिवाय थेट विक्री','देशभरात खरेदीदार','ऑनलाइन पेमेंट','योग्य बाजारभाव'],elig:['कोणताही शेतकरी नोंदणी करू शकतो','enam.gov.in वर ऑनलाइन'],link:'https://enam.gov.in'}
+};
+
+function openScheme(id){
+  const s=SCHEMES[id];if(!s)return;
+  document.getElementById('modTitle').textContent=s.title;
+  document.getElementById('modSub').textContent=s.sub;
+  document.getElementById('modContent').innerHTML=`
+    <ul class="ben-list">${s.bens.map(b=>`<li><i class="fas fa-check-circle"></i><span>${b}</span></li>`).join('')}</ul>
+    <div class="elig"><h5>✅ पात्रता आणि अर्ज</h5>${s.elig.map(e=>`<span class="etag">${e}</span>`).join('')}</div>
+    <button class="apply-btn" onclick="window.open('${s.link}','_blank')"><i class="fas fa-external-link-alt"></i> अधिकृत पोर्टलवर अर्ज करा</button>`;
+  document.getElementById('schModal').classList.add('open');
+}
+function closeModal(){document.getElementById('schModal').classList.remove('open')}
+
+// ──────── NOTIFICATIONS ────────
+function toggleNotif(){
+  document.getElementById('notifPanel').classList.toggle('open');
+}
+
+// ──────── CHAT TABS ────────
+function switchTab(tab,btn){
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  ['chat','faq','prices'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.style.display=t===tab?'flex':'none';
+    if(t===tab&&t!=='chat')document.getElementById('tab-'+t).style.display='block';
+  });
+  if(tab==='chat')document.getElementById('tab-chat').style.display='flex';
+}
+
+// ──────── CHATBOT ────────
+const BRES={
+  'बाजार भाव':'आजचे प्रमुख बाजार भाव:\n🌿 सोयाबीन: ₹4,100/क्विं. (▼ 2.1%)\n☕ कापूस: ₹6,500/क्विं. (▼ 0.8%)\n🧅 कांदा: ₹2,800/क्विं. (▲ 5.3%)\n🌾 गहू: ₹2,275/क्विं. (▲ 1.2%)\n\n"बाजार भाव" टॅब मध्ये सर्व पिकांचे भाव पहा.',
+  'pm-kisan':'PM-KISAN योजना:\n✅ वार्षिक ₹6,000 (3 हप्ते × ₹2,000)\n✅ थेट बँक खात्यात\n✅ e-KYC अनिवार्य\n\npmkisan.gov.in वर स्थिती तपासा.',
+  'सोयाबीन':'सोयाबीन पिक सल्ला:\n🌱 पेरणी: जून 15–जुलै 15\n📐 अंतर: 45×10 cm\n💊 Rhizobium + PSB बीज प्रक्रिया\n💧 4-5 वेळा पाणी\n⚠️ पिवळा मोझेक टाळण्यासाठी प्रतिरोधक वाण वापरा.',
+  'पिक विमा':'पिक विमा (PMFBY):\n📅 खरीप: 2% प्रीमियम | जून 30 मुदत\n📅 रब्बी: 1.5% प्रीमियम | नोव्हेंबर 30\n\nबँक/CSC/pmfby.gov.in वर अर्ज करा.',
+  'हवामान':'हवामान माहिती:\nमुख्यपृष्ठावर तुमच्या स्थानाचे LIVE हवामान पहा. 5 दिवसांचा अंदाज, आर्द्रता, वारा सर्व माहिती उपलब्ध आहे.',
+  'कापूस':'कापूस पिक सल्ला:\n🌱 पेरणी: जून 15–जुलै 10\n📐 अंतर: 90×45 cm\n💧 8-10 वेळा पाणी\n🌿 NPK 120:60:60\n⚠️ पांढरी माशी नियंत्रण महत्त्वाचे.',
+  'कर्ज':'कृषी कर्ज:\n🏦 KCC: 4% व्याजावर ₹3 लाख\n🏦 NABARD: विविध योजना\n\n"कर्ज कॅल्क्युलेटर" टॅबमध्ये EMI मोजा.',
+  'default':'धन्यवाद! 🙏\n\nमी तुम्हाला मदत करू शकतो:\n• 🌾 पिक सल्ला (कोणत्याही पिकासाठी)\n• 📈 बाजार भाव\n• 📋 शासन योजना (PM-KISAN, विमा, KCC)\n• 🪨 माती माहिती\n• 🐛 कीड सतर्कता\n• 🏦 कर्ज माहिती\n\n📞 हेल्पलाइन: 1800-180-1551'
+};
+
+const FAQ_DATA=[
+  {q:'PM-KISAN साठी कसे नोंदणी करावे?',a:'pmkisan.gov.in वर जा, "Farmer Corner" मध्ये "New Farmer Registration" वर क्लिक करा. आधार, बँक खाते, जमीन कागदपत्रे आवश्यक.'},
+  {q:'पिक विमा कधी घ्यावा?',a:'खरीप: जून 30 पूर्वी, रब्बी: नोव्हेंबर 30 पूर्वी. जवळच्या बँक किंवा CSC केंद्रात अर्ज करा.'},
+  {q:'सेंद्रिय शेतीसाठी कोणती योजना आहे?',a:'PKVY (परंपरागत कृषी विकास योजना) — 3 वर्षांत ₹50,000/हेक्टर अनुदान. 50 शेतकऱ्यांचा गट तयार करा.'},
+  {q:'ठिबक सिंचनावर अनुदान मिळते का?',a:'हो! SC/ST शेतकऱ्यांना 80%, इतरांना 55% अनुदान. MahaDBT पोर्टलवर अर्ज करा.'},
+  {q:'KCC कर्ज कसे मिळवावे?',a:'जवळच्या बँकेत जा. आधार, जमीन 7/12, बँक खाते द्या. 4% व्याजावर ₹3 लाखपर्यंत कर्ज मिळते.'},
+];
+document.getElementById('faqList').innerHTML=FAQ_DATA.map((f,i)=>`
+  <div style="border:1px solid var(--gray-l);border-radius:7px;margin-bottom:8px;overflow:hidden">
+    <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'" style="padding:10px 12px;cursor:pointer;font-size:13px;font-weight:700;color:var(--green-d);background:var(--green-l);display:flex;justify-content:space-between">
+      <span>${f.q}</span><span>+</span>
+    </div>
+    <div style="display:none;padding:10px 12px;font-size:13px;color:var(--dark)">${f.a}</div>
+  </div>
+`).join('');
+
+let chatOpen=false,chatInit=false;
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chatWin').classList.toggle('open',chatOpen);
+  document.querySelector('.chat-fab .fbadge').style.display='none';
+  if(chatOpen&&!chatInit){chatInit=true;addBot(LD[curLang].chatWelcome||LD.mr.chatWelcome)}
+}
+function openChat(){if(!chatOpen)toggleChat()}
+
+function addBot(text){
+  const msgs=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg bot';
+  d.innerHTML=`<div class="mbubble">${text.replace(/\n/g,'<br>')}</div><div class="mtime">${gtime()}</div>`;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function addUser(text){
+  const msgs=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg user';
+  d.innerHTML=`<div class="mbubble">${text}</div><div class="mtime">${gtime()}</div>`;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function showTyping(){
+  const msgs=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg bot typ-msg';
+  d.innerHTML=`<div class="mbubble"><div class="typing-ind"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>`;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function gtime(){return new Date().toLocaleTimeString('mr-IN',{hour:'2-digit',minute:'2-digit'})}
+
+function getReply(text){
+  const l=text.toLowerCase();
+  if(l.includes('बाजार')||l.includes('भाव')||l.includes('price'))return BRES['बाजार भाव'];
+  if(l.includes('pm-kisan')||l.includes('kisan')||l.includes('6000'))return BRES['pm-kisan'];
+  if(l.includes('सोयाबीन')||l.includes('soybean'))return BRES['सोयाबीन'];
+  if(l.includes('विमा')||l.includes('insurance'))return BRES['पिक विमा'];
+  if(l.includes('हवामान')||l.includes('weather')||l.includes('पाऊस'))return BRES['हवामान'];
+  if(l.includes('कापूस')||l.includes('cotton'))return BRES['कापूस'];
+  if(l.includes('कर्ज')||l.includes('loan')||l.includes('emi'))return BRES['कर्ज'];
+  return BRES['default'];
+}
+
+function sendChat(){
+  const inp=document.getElementById('chatInp');
+  const text=inp.value.trim();if(!text)return;
+  addUser(text);inp.value='';showTyping();
+  setTimeout(()=>{document.querySelector('.typ-msg')?.remove();addBot(getReply(text))},900+Math.random()*600);
+}
+function sqr(text){
+  if(!chatOpen)openChat();
+  setTimeout(()=>{addUser(text);showTyping();setTimeout(()=>{document.querySelector('.typ-msg')?.remove();addBot(getReply(text))},900)},200);
+}
+
+// ──────── VOICE INPUT (NEW) ────────
+let recognition=null,isListening=false;
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+function toggleVoice(){
+  if(!SpeechRecognition){
+    alert('तुमचा ब्राउझर आवाज ओळखणे समर्थन करत नाही. Chrome वापरा.');
+    return;
+  }
+  if(isListening){stopVoice();return}
+  startVoice();
+}
+
+function startVoice(){
+  if(!SpeechRecognition)return;
+  recognition=new SpeechRecognition();
+  recognition.lang='mr-IN';
+  recognition.interimResults=true;
+  recognition.maxAlternatives=1;
+  recognition.continuous=false;
+
+  recognition.onstart=()=>{
+    isListening=true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('voiceStatus').classList.add('show');
+    document.getElementById('voiceStatus').textContent='🎙️ ऐकत आहे... बोला';
+  };
+  recognition.onresult=(e)=>{
+    let transcript='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      transcript+=e.results[i][0].transcript;
+    }
+    document.getElementById('chatInp').value=transcript;
+    document.getElementById('voiceStatus').textContent='🎙️ "'+transcript+'"';
+  };
+  recognition.onend=()=>{
+    isListening=false;
+    document.getElementById('micBtn').classList.remove('listening');
+    setTimeout(()=>{
+      document.getElementById('voiceStatus').classList.remove('show');
+    },1500);
+    const val=document.getElementById('chatInp').value.trim();
+    if(val)sendChat();
+  };
+  recognition.onerror=(e)=>{
+    isListening=false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('voiceStatus').classList.remove('show');
+    if(e.error==='no-speech'){
+      document.getElementById('voiceStatus').textContent='कोणताही आवाज आढळला नाही';
+      document.getElementById('voiceStatus').classList.add('show');
+      setTimeout(()=>document.getElementById('voiceStatus').classList.remove('show'),2000);
+    }
+  };
+
+  try{recognition.start()}catch(e){}
+}
+
+function stopVoice(){
+  if(recognition)recognition.stop();
+  isListening=false;
+  document.getElementById('micBtn').classList.remove('listening');
+  document.getElementById('voiceStatus').classList.remove('show');
+}
+
+// ──────── INIT ────────
+document.getElementById('fyear').textContent=new Date().getFullYear();
+setLang('mr');
+</script>
 </body>
 </html>
