@@ -7,7 +7,7 @@
 **KrishiMitra** is a smart agriculture platform designed to help farmers make informed crop decisions using **Machine Learning** and **real-time weather data**.  
 The system features a clean dashboard for easy navigation and uses a **Random Forest algorithm** to predict the most suitable crop based on soil and climate parameters entered by the user.
 
-🔗 **Live Website:** https://krishimitramh.netlify.app/
+🔗 **Live Website:** https://krishimitramhvedant1.netlify.app/
 
 ---
 
