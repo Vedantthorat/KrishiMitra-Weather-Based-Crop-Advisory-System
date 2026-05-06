@@ -55,7 +55,7 @@ The system features a clean dashboard for easy navigation and uses a **Random Fo
 Open:
 
 Or visit the hosted version:  
-➡️ https://krishimitramh.netlify.app/
+➡️ (https://krishimitramhvedant1.netlify.app/)
 
 ---
 
