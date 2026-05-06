@@ -1,6 +1,6 @@
 # 🌾 KrishiMitra – Smart Crop Advisory System
 
-<img width="1919" height="979" alt="image" src="https://github.com/user-attachments/assets/eba52c8a-294e-4983-a9e4-4707c8d070ed" />
+<img width="1919" height="937" alt="image" src="https://github.com/user-attachments/assets/1f974f5c-bfdb-4ac5-bbdc-b222268b82bf" />
 
 
 
