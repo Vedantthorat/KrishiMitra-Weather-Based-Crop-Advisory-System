@@ -27,7 +27,7 @@ The system features a clean dashboard for easy navigation and uses a **Random Fo
 | Area | Technology |
 |------|------------|
 | Frontend | HTML, CSS, JavaScript |
-| Machine Learning | Random Forest Classifier |
+| Machine Learning | Random Forest Classifier | Ensemble Learning  |
 | Backend / Model Serving | Streamlit |
 | Weather API | OpenWeatherMap |
 | Hosting | Netlify |
