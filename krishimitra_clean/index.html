@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>कृषिमित्र | KrishiMitra — Smart Farmer Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+<!-- ── NOTIFICATIONS PANEL ── -->
+<div class="notif-panel" id="notifPanel">
+  <div class="np-hd">
+    <h4>🔔 सूचना (Notifications)</h4>
+    <button class="np-close" onclick="toggleNotif()">✕</button>
+  </div>
+  <div class="np-item"><div class="np-ico">💰</div><div><h5>PM-KISAN 19वा हप्ता</h5><p>₹2,000 लवकरच तुमच्या खात्यात येईल.</p><div class="np-time">आज</div></div></div>
+  <div class="np-item"><div class="np-ico">⚠️</div><div><h5>कापूस पांढरी माशी सतर्कता</h5><p>विदर्भात कापूस उत्पादकांनी काळजी घ्यावी.</p><div class="np-time">2 तासांपूर्वी</div></div></div>
+  <div class="np-item"><div class="np-ico">🌧️</div><div><h5>पाऊस अंदाज</h5><p>पुढील 3 दिवसांत मध्यम पावसाची शक्यता.</p><div class="np-time">काल</div></div></div>
+  <div class="np-item"><div class="np-ico">📋</div><div><h5>पिक विमा अर्ज मुदत</h5><p>खरीप 2025 विम्यासाठी अंतिम तारीख: जून 30.</p><div class="np-time">3 दिवसांपूर्वी</div></div></div>
+</div>
+
+<!-- ── UTILITY BAR ── -->
+<div class="u-bar">
+  <div class="inner">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+      <span>🌿 कृषिमित्र — Smart Farmer Portal</span>
+      <a href="#" onclick="goTo('policies');return false;"><i class="fas fa-file-alt"></i> शेतकरी योजना</a>
+      <a href="#" onclick="goTo('prices');return false;"><i class="fas fa-chart-line"></i> बाजार भाव</a>
+      <a href="#" onclick="goTo('loans');return false;"><i class="fas fa-calculator"></i> कर्ज कॅल्क्युलेटर</a>
+    </div>
+    <div class="lang-sw">
+      <span>भाषा:</span>
+      <button class="lang-btn active" onclick="setLang('mr')">मराठी</button>
+      <button class="lang-btn" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-inner">
+    <div class="brand">
+      <div class="brand-logo">
+        <img src="assets/logo.jpg" alt="KrishiMitra Logo" style="width:54px;height:54px;border-radius:50%;object-fit:cover;" onerror="this.parentElement.innerHTML='🌾'" />
+      </div>
+      <div class="brand-text">
+        <h1 id="brandTitle">कृषिमित्र</h1>
+        <div class="sub" id="brandSub">हवामान आधारित पिक सल्ला प्रणाली</div>
+        <div class="tag">Smart Farmer Portal</div>
+      </div>
+    </div>
+    <div class="h-right">
+      <div class="wx-pill" onclick="goTo('home')">
+        <i class="fas fa-cloud-sun"></i>
+        <span id="hTemp">-- °C</span>
+        <span id="hCity">--</span>
+      </div>
+      <div class="notif-btn" onclick="toggleNotif()" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <div class="notif-dot"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-in">
+    <a class="nl act" href="#" onclick="goTo('home');return false;" id="nav-home"><i class="fas fa-home"></i><span data-key="home">मुख्यपृष्ठ</span></a>
+    <a class="nl" href="#" onclick="goTo('advisory');return false;" id="nav-advisory"><i class="fas fa-seedling"></i><span data-key="advisory">पिक सल्ला</span></a>
+    <a class="nl" href="#" onclick="goTo('prices');return false;" id="nav-prices"><i class="fas fa-tags"></i><span data-key="prices">बाजार भाव</span></a>
+    <a class="nl" href="#" onclick="goTo('policies');return false;" id="nav-policies"><i class="fas fa-file-contract"></i><span data-key="policies">शासन योजना</span><span class="nbadge">नवीन</span></a>
+    <a class="nl" href="#" onclick="goTo('soil');return false;" id="nav-soil"><i class="fas fa-mountain"></i><span data-key="soil">माती माहिती</span></a>
+    <a class="nl" href="#" onclick="goTo('calendar');return false;" id="nav-calendar"><i class="fas fa-calendar-alt"></i><span data-key="calendar">दिनदर्शिका</span></a>
+    <a class="nl" href="#" onclick="goTo('pests');return false;" id="nav-pests"><i class="fas fa-bug"></i><span data-key="pests">कीड सतर्कता</span><span class="nbadge" style="background:#ef4444">3</span></a>
+    <a class="nl" href="#" onclick="goTo('loans');return false;" id="nav-loans"><i class="fas fa-calculator"></i><span data-key="loans">कर्ज कॅल्क्युलेटर</span></a>
+    <a class="nl" href="#" onclick="goTo('mandi');return false;" id="nav-mandi"><i class="fas fa-store"></i><span data-key="mandi">मंडी शोधा</span></a>
+  </div>
+</nav>
+
+<!-- ── ALERT STRIP ── -->
+<div class="alert-strip">
+  <div class="alert-in">
+    <span class="alert-badge">📢 सूचना</span>
+    <marquee><span id="alertText">खरीप हंगाम 2025 नोंदणी सुरू आहे। PM-KISAN 19वा हप्ता लवकरच येणार आहे।</span></marquee>
+  </div>
+</div>
+
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-in">
+    <span class="ticker-lbl">📊 LIVE भाव</span>
+    <div class="ticker-scroll">
+      <div class="ticker-ct" id="tickerCt">
+        <span>🌾 गहू: ₹2,275/क्विं. ▲ | 🌽 मका: ₹1,950/क्विं. ▲ | 🌿 सोयाबीन: ₹4,100/क्विं. ▼ | 🧅 कांदा: ₹2,800/क्विं. ▲ | 🍅 टोमॅटो: ₹1,200/क्विं. ▼ | 🌾 धान: ₹2,183/क्विं. — | 🥜 भुईमूग: ₹5,850/क्विं. ▲ | ☕ कापूस: ₹6,500/क्विं. ▼ |</span>
+        <span>🌾 गहू: ₹2,275/क्विं. ▲ | 🌽 मका: ₹1,950/क्विं. ▲ | 🌿 सोयाबीन: ₹4,100/क्विं. ▼ | 🧅 कांदा: ₹2,800/क्विं. ▲ | 🍅 टोमॅटो: ₹1,200/क्विं. ▼ | 🌾 धान: ₹2,183/क्विं. — | 🥜 भुईमूग: ₹5,850/क्विं. ▲ | ☕ कापूस: ₹6,500/क्विं. ▼ |</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BREADCRUMB ── -->
+<div class="bc">
+  <div class="inner">
+    <i class="fas fa-home"></i>
+    <a href="#" onclick="goTo('home');return false;">मुख्यपृष्ठ</a>
+    <span id="bcrumb"></span>
+  </div>
+</div>
+
+<!-- ══════════════ HOME ══════════════ -->
+<div class="pg act" id="pg-home">
+  <div class="hero">
+    <div class="hero-in">
+      <div>
+        <h1 class="hero-title" id="heroTitle">महाराष्ट्रातील शेतकऱ्यांचा विश्वासू मित्र 🌿</h1>
+        <p class="hero-sub" id="heroSub">हवामान, माती आणि बाजारभाव यावर आधारित अचूक पिक सल्ला — मराठीत, थेट तुमच्या मोबाईलवर</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo('advisory')"><i class="fas fa-seedling"></i><span id="hb1">पिक सल्ला मिळवा</span></button>
+          <button class="btn-outline" onclick="goTo('prices')"><i class="fas fa-chart-line"></i><span id="hb2">आजचे बाजार भाव</span></button>
+          <button class="btn-outline" onclick="goTo('policies')"><i class="fas fa-file-contract"></i><span id="hb3">शासन योजना</span></button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-c"><div class="n">58+</div><div class="l">जिल्हे कव्हर केले</div></div>
+        <div class="stat-c"><div class="n">1.2L+</div><div class="l">शेतकरी</div></div>
+        <div class="stat-c"><div class="n">95%</div><div class="l">अचूकता दर</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-wrap">
+    <!-- QUICK ICONS -->
+    <div class="quick-icons">
+      <div class="qi" onclick="goTo('advisory')"><div class="ico">🌾</div><div class="lbl">पिक सल्ला</div></div>
+      <div class="qi" onclick="goTo('prices')"><div class="ico">📈</div><div class="lbl">बाजार भाव</div></div>
+      <div class="qi" onclick="goTo('policies')"><div class="ico">📋</div><div class="lbl">योजना</div></div>
+      <div class="qi" onclick="goTo('soil')"><div class="ico">🪨</div><div class="lbl">माती माहिती</div></div>
+      <div class="qi" onclick="goTo('pests')"><div class="ico">🐛</div><div class="lbl">कीड सतर्कता</div></div>
+      <div class="qi" onclick="goTo('loans')"><div class="ico">🏦</div><div class="lbl">कर्ज कॅल्क्युलेटर</div></div>
+      <div class="qi" onclick="openChat()"><div class="ico" style="color:var(--saffron)">💬</div><div class="lbl" style="color:var(--saffron)">AI चॅटबॉट</div></div>
+    </div>
+
+    <div class="main-grid">
+      <div style="display:flex;flex-direction:column;gap:20px">
+
+        <!-- WEATHER -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-cloud-sun" style="color:var(--saffron)"></i>&nbsp;<span id="wxTitle">आजचे हवामान</span></h3>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+              <span style="font-size:12px;color:var(--gray)" id="wxLoc">स्थान शोधत आहे...</span>
+            </div>
+          </div>
+          <div class="wx-main">
+            <div>
+              <div class="wx-city" id="wxCity">--</div>
+              <div class="wx-temp" id="wxTemp">--°</div>
+              <div class="wx-desc" id="wxDesc">--</div>
+            </div>
+            <div class="wx-ico" id="wxIco">🌤️</div>
+          </div>
+          <div class="wx-details">
+            <div class="wxd"><div class="lbl">💧 आर्द्रता</div><div class="val" id="wxHum">--%</div></div>
+            <div class="wxd"><div class="lbl">💨 वारा</div><div class="val" id="wxWind">-- km/h</div></div>
+            <div class="wxd"><div class="lbl">🌡️ जाणवते</div><div class="val" id="wxFeels">--°C</div></div>
+            <div class="wxd"><div class="lbl">👁️ दृश्यमानता</div><div class="val" id="wxVis">-- km</div></div>
+            <div class="wxd"><div class="lbl">🔴 UV निर्देशांक</div><div class="val" id="wxUV">--</div></div>
+            <div class="wxd"><div class="lbl">📊 दबाव</div><div class="val" id="wxPres">-- hPa</div></div>
+          </div>
+          <div class="forecast-row" id="fcRow">
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+            <div class="fc-day"><div class="dn">--</div><div style="font-size:18px">🌤️</div><div class="ft">--°</div><div class="fr">--%</div></div>
+          </div>
+        </div>
+
+        <!-- QUICK ADVISORY -->
+        <div class="card">
+          <div class="card-hd"><h3><i class="fas fa-seedling" style="color:var(--green)"></i>&nbsp;त्वरित पिक सल्ला</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>जिल्हा निवडा</label>
+                <select class="fc" id="qDist">
+                  <option value="">-- जिल्हा निवडा --</option>
+                  <option>पुणे</option><option>नाशिक</option><option>औरंगाबाद</option>
+                  <option>नागपूर</option><option>सोलापूर</option><option>कोल्हापूर</option>
+                  <option>सातारा</option><option>अमरावती</option><option>लातूर</option>
+                  <option>अकोला</option><option>जळगाव</option><option>धुळे</option>
+                </select>
+              </div>
+              <div class="fg"><label>माती प्रकार</label>
+                <select class="fc" id="qSoil">
+                  <option value="">-- माती प्रकार --</option>
+                  <option value="black">काळी माती</option>
+                  <option value="red">लाल माती</option>
+                  <option value="lateritic">लॅटेराइट माती</option>
+                  <option value="alluvial">गाळाची माती</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>हंगाम</label>
+                <select class="fc" id="qSeason">
+                  <option value="kharif">खरीप (जून-ऑक्टोबर)</option>
+                  <option value="rabi">रब्बी (नोव्हेंबर-मार्च)</option>
+                  <option value="summer">उन्हाळी (मार्च-जून)</option>
+                </select>
+              </div>
+              <div class="fg"><label>सिंचन व्यवस्था</label>
+                <select class="fc" id="qIrrig">
+                  <option value="rain">पावसावर अवलंबित</option>
+                  <option value="well">विहीर/बोअरवेल</option>
+                  <option value="canal">कालवा</option>
+                  <option value="drip">ठिबक सिंचन</option>
+                </select>
+              </div>
+            </div>
+            <button class="sub-btn" onclick="getQAdvisory()"><i class="fas fa-search"></i>सल्ला मिळवा</button>
+            <div class="adv-result" id="qResult"></div>
+          </div>
+        </div>
+
+        <!-- PRICE TREND CHART -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-chart-area" style="color:var(--gold)"></i>&nbsp;किंमत ट्रेंड (7 दिवस)</h3>
+            <select class="fc" style="width:auto;padding:4px 10px;font-size:12px" id="chartCrop" onchange="updateChart()">
+              <option value="soybean">सोयाबीन</option>
+              <option value="cotton">कापूस</option>
+              <option value="onion">कांदा</option>
+              <option value="wheat">गहू</option>
+            </select>
+          </div>
+          <div class="card-body">
+            <canvas id="priceChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDEBAR -->
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- LIVE PRICES -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-tags" style="color:var(--gold)"></i>&nbsp;आजचे भाव</h3>
+            <a href="#" onclick="goTo('prices');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="ptable">
+              <thead><tr><th>पिक</th><th>भाव</th><th>बदल</th></tr></thead>
+              <tbody>
+                <tr><td>सोयाबीन</td><td>₹4,100</td><td class="pd">▼ 2.1%</td></tr>
+                <tr><td>कापूस</td><td>₹6,500</td><td class="pd">▼ 0.8%</td></tr>
+                <tr><td>कांदा</td><td>₹2,800</td><td class="pu">▲ 5.3%</td></tr>
+                <tr><td>गहू</td><td>₹2,275</td><td class="pu">▲ 1.2%</td></tr>
+                <tr><td>ज्वारी</td><td>₹3,200</td><td class="pu">▲ 0.9%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PEST ALERT MINI -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-bug" style="color:#ef4444"></i>&nbsp;कीड सतर्कता</h3>
+            <a href="#" onclick="goTo('pests');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div class="card-body" style="padding:10px">
+            <div class="pest-card" style="padding:10px;margin-bottom:6px">
+              <div class="pest-sev high"></div>
+              <div class="pest-icon">🐛</div>
+              <div class="pest-info"><h4>पांढरी माशी — कापूस</h4><p>विदर्भात उच्च धोका</p><span class="pest-badge pb-high">उच्च धोका</span></div>
+            </div>
+            <div class="pest-card" style="padding:10px">
+              <div class="pest-sev med"></div>
+              <div class="pest-icon">🦗</div>
+              <div class="pest-info"><h4>खोडकिडा — ज्वारी</h4><p>मराठवाड्यात मध्यम धोका</p><span class="pest-badge pb-med">मध्यम धोका</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCHEMES PREVIEW -->
+        <div class="card">
+          <div class="card-hd">
+            <h3><i class="fas fa-star" style="color:var(--saffron)"></i>&nbsp;महत्त्वाच्या योजना</h3>
+            <a href="#" onclick="goTo('policies');return false;" style="font-size:12px;color:var(--green);font-weight:700;text-decoration:none">सर्व पहा →</a>
+          </div>
+          <div class="card-body" style="padding:10px;display:flex;flex-direction:column;gap:7px">
+            <div onclick="openScheme('pmkisan')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;border:1px solid var(--gray-l)">
+              <span style="font-size:22px">💰</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">PM-KISAN</div><div style="font-size:11px;color:var(--gray)">₹6,000/वर्ष थेट लाभ</div></div>
+            </div>
+            <div onclick="openScheme('fasal-bima')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;border:1px solid var(--gray-l)">
+              <span style="font-size:22px">🛡️</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">पिक विमा योजना</div><div style="font-size:11px;color:var(--gray)">नैसर्गिक आपत्ती संरक्षण</div></div>
+            </div>
+            <div onclick="openScheme('kcc')" style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--off);border-radius:7px;cursor:pointer;border:1px solid var(--gray-l)">
+              <span style="font-size:22px">💳</span><div><div style="font-size:13px;font-weight:700;color:var(--green-d)">किसान क्रेडिट कार्ड</div><div style="font-size:11px;color:var(--gray)">4% व्याजावर कर्ज</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HELPLINE -->
+        <div class="help-card">
+          <div class="hc-body">
+            <div style="font-size:32px;margin-bottom:6px">📞</div>
+            <div style="font-size:14px;font-weight:700">कृषि हेल्पलाइन</div>
+            <div class="num">1800-180-1551</div>
+            <div style="font-size:12px;color:rgba(255,255,255,.75)">टोल-फ्री | सोम-शनि | सकाळी 6 ते रात्री 10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADVISORY PAGE ══════════════ -->
+<div class="pg" id="pg-advisory">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>पिक सल्ला प्रणाली</h2><span class="tag">AI-Powered</span></div>
+    <div class="main-grid">
+      <div>
+        <div class="card">
+          <div class="card-hd"><h3><i class="fas fa-seedling" style="color:var(--green)"></i>&nbsp;तुमची माहिती भरा</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>📍 जिल्हा</label>
+                <select class="fc" id="aDist">
+                  <option value="">-- जिल्हा निवडा --</option>
+                  <option>पुणे</option><option>नाशिक</option><option>औरंगाबाद</option>
+                  <option>नागपूर</option><option>सोलापूर</option><option>कोल्हापूर</option>
+                  <option>सातारा</option><option>अमरावती</option><option>लातूर</option><option>अकोला</option>
+                </select>
+              </div>
+              <div class="fg"><label>🪨 माती प्रकार</label>
+                <select class="fc" id="aSoil">
+                  <option value="">-- माती प्रकार --</option>
+                  <option value="black">काळी माती</option><option value="red">लाल माती</option>
+                  <option value="lateritic">लॅटेराइट माती</option><option value="alluvial">गाळाची माती</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>🌦️ हंगाम</label>
+                <select class="fc" id="aSeason">
+                  <option value="kharif">खरीप</option><option value="rabi">रब्बी</option><option value="summer">उन्हाळी</option>
+                </select>
+              </div>
+              <div class="fg"><label>💧 सिंचन</label>
+                <select class="fc" id="aIrrig">
+                  <option value="rain">पावसावर अवलंबित</option><option value="well">विहीर/बोअरवेल</option>
+                  <option value="canal">कालवा</option><option value="drip">ठिबक सिंचन</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="fg"><label>🌡️ सरासरी तापमान (°C)</label><input type="number" class="fc" id="aTemp" placeholder="उदा. 28" /></div>
+              <div class="fg"><label>💧 पाऊस (mm/वर्ष)</label><input type="number" class="fc" id="aRain" placeholder="उदा. 700" /></div>
+            </div>
+            <button class="sub-btn" onclick="getFullAdvisory()"><i class="fas fa-brain"></i>AI सल्ला मिळवा</button>
+            <div class="adv-result" id="aResult"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>📊 ML पिक अंदाज</h3></div>
+          <div class="card-body" style="text-align:center">
+            <img src="assets/predict_crop_logo.jpg" alt="Predict Crop" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin:10px auto;display:block;" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+            <div style="display:none;font-size:48px;margin:14px 0">🤖</div>
+            <p style="font-size:13px;color:var(--gray);margin-bottom:14px">Machine Learning मॉडेल तुमच्यासाठी सर्वोत्तम पिक सुचवेल</p>
+            <button class="btn-primary" style="width:100%;justify-content:center" onclick="window.open('https://unseasonable-rain-crop-advisory-system.streamlit.app/')">
+              <i class="fas fa-robot"></i>ML Model वापरा
+            </button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📄 PDF मार्गदर्शिका</h3></div>
+          <div class="card-body" style="text-align:center;padding:16px">
+            <div style="font-size:36px;margin-bottom:8px">📄</div>
+            <p style="font-size:13px;color:var(--gray);margin-bottom:12px">हवामान आधारित पिक निवड मार्गदर्शिका डाउनलोड करा</p>
+            <a href="assets/KrishiMitraguide.pdf" download class="btn-primary" style="display:inline-flex;text-decoration:none">
+              <i class="fas fa-download"></i>PDF डाउनलोड करा
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PRICES PAGE ══════════════ -->
+<div class="pg" id="pg-prices">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>महाराष्ट्र बाजार भाव</h2><span class="tag">आजचे दर</span></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <select class="fc" style="width:auto" id="mktFilter" onchange="filterPrices()">
+        <option value="all">सर्व बाजार</option>
+        <option value="pune">पुणे APMC</option><option value="nashik">नाशिक APMC</option>
+        <option value="nagpur">नागपूर APMC</option><option value="latur">लातूर APMC</option>
+        <option value="akola">अकोला APMC</option>
+      </select>
+      <select class="fc" style="width:auto" id="ctFilter" onchange="filterPrices()">
+        <option value="all">सर्व पिके</option>
+        <option value="cereal">धान्य</option><option value="vegetable">भाजीपाला</option>
+        <option value="oilseed">तेलबिया</option><option value="cash">नगदी पिके</option>
+      </select>
+      <button class="sub-btn" style="width:auto;padding:9px 16px" onclick="loadLivePrices()"><i class="fas fa-sync-alt"></i>रिफ्रेश</button>
+    </div>
+    <div class="card">
+      <div style="overflow-x:auto">
+        <table class="ptable" id="priceTable">
+          <thead><tr><th>पिक</th><th>बाजार</th><th>किमान</th><th>कमाल</th><th>सरासरी</th><th>MSP</th><th>बदल</th><th>अद्यतन</th></tr></thead>
+          <tbody id="ptBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ POLICIES PAGE ══════════════ -->
+<div class="pg" id="pg-policies">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>शेतकरी योजना</h2><span class="tag">2024-25</span></div>
+    <div class="sch-grid">
+      <div class="sch-card" onclick="openScheme('pmkisan')"><div class="sch-icon">💰</div><h4>PM-KISAN</h4><p>वार्षिक ₹6,000 थेट बँक खात्यात. 3 हप्ते × ₹2,000.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('fasal-bima')"><div class="sch-icon">🛡️</div><h4>पीएम पीक विमा (PMFBY)</h4><p>नैसर्गिक आपत्ती, कीड-रोग — कमी प्रीमियममध्ये संरक्षण.</p><span class="sch-tag">केंद्र + राज्य</span><span class="sch-new">अर्ज सुरू</span></div>
+      <div class="sch-card" onclick="openScheme('pkvy')"><div class="sch-icon">🌱</div><h4>परंपरागत कृषी विकास (PKVY)</h4><p>सेंद्रिय शेतीसाठी 3 वर्षांत ₹50,000/हेक्टर अनुदान.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('kcc')"><div class="sch-icon">💳</div><h4>किसान क्रेडिट कार्ड (KCC)</h4><p>4% व्याजदरावर ₹3 लाखपर्यंत अल्पमुदत कर्ज.</p><span class="sch-tag">केंद्र सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('magel-tyala')"><div class="sch-icon">💧</div><h4>मागेल त्याला शेततळे</h4><p>100% अनुदानावर शेततळे निर्मिती.</p><span class="sch-tag">राज्य सरकार</span><span class="sch-new">नवीन</span></div>
+      <div class="sch-card" onclick="openScheme('solar-pump')"><div class="sch-icon">☀️</div><h4>मुख्यमंत्री सौर कृषी पंप</h4><p>95% सबसिडीवर सोलर पंप.</p><span class="sch-tag">राज्य सरकार</span></div>
+      <div class="sch-card" onclick="openScheme('drip-subsidy')"><div class="sch-icon">🌊</div><h4>ठिबक/तुषार सिंचन अनुदान</h4><p>55-80% अनुदान. पाण्याची 40-60% बचत.</p><span class="sch-tag">राज्य + केंद्र</span></div>
+      <div class="sch-card" onclick="openScheme('e-nam')"><div class="sch-icon">🏪</div><h4>e-NAM (राष्ट्रीय कृषी बाजार)</h4><p>ऑनलाइन मंडीद्वारे थेट विक्री.</p><span class="sch-tag">केंद्र सरकार</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SOIL PAGE ══════════════ -->
+<div class="pg" id="pg-soil">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>माती माहिती</h2><span class="tag">Maharashtra</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>🪨 माती प्रकार निवडा</h3></div>
+        <div class="card-body">
+          <div class="soil-grid">
+            <div class="soil-btn" onclick="showSoil('black',this)"><div class="si">⬛</div><div class="sn">काळी माती</div></div>
+            <div class="soil-btn" onclick="showSoil('red',this)"><div class="si">🟥</div><div class="sn">लाल माती</div></div>
+            <div class="soil-btn" onclick="showSoil('lateritic',this)"><div class="si">🟫</div><div class="sn">लॅटेराइट माती</div></div>
+            <div class="soil-btn" onclick="showSoil('alluvial',this)"><div class="si">🟨</div><div class="sn">गाळाची माती</div></div>
+          </div>
+          <div class="soil-out" id="soilOut"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>📍 जिल्हानुसार माती</h3></div>
+        <div class="card-body" style="font-size:13px;line-height:2.1">
+          <div><strong style="color:var(--green-d)">काळी माती:</strong> विदर्भ, मराठवाडा (नागपूर, अकोला, लातूर)</div>
+          <div><strong style="color:var(--green-d)">लाल माती:</strong> पश्चिम महाराष्ट्र (पुणे, सातारा, कोल्हापूर)</div>
+          <div><strong style="color:var(--green-d)">लॅटेराइट माती:</strong> कोकण (रत्नागिरी, सिंधुदुर्ग)</div>
+          <div><strong style="color:var(--green-d)">गाळाची माती:</strong> नदी खोरे (नाशिक, जळगाव, धुळे)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CALENDAR PAGE ══════════════ -->
+<div class="pg" id="pg-calendar">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>शेती दिनदर्शिका</h2><span class="tag">2025-26</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>📅 हंगामनिहाय कामे</h3></div>
+        <div class="card-body"><div id="calList"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>🌾 हंगाम माहिती</h3></div>
+        <div class="card-body" style="font-size:13px">
+          <div style="margin-bottom:12px;padding:12px;background:var(--green-l);border-radius:7px"><div style="font-weight:700;color:var(--green-d);margin-bottom:3px">🌧️ खरीप (जून - ऑक्टोबर)</div><div>सोयाबीन, कापूस, ज्वारी, बाजरी, तूर, मूग, उडीद</div></div>
+          <div style="margin-bottom:12px;padding:12px;background:#FFF3E8;border-radius:7px"><div style="font-weight:700;color:var(--saffron);margin-bottom:3px">❄️ रब्बी (नोव्हेंबर - मार्च)</div><div>गहू, हरभरा, मका, करडई, ज्वारी (रब्बी)</div></div>
+          <div style="padding:12px;background:#FFF8E1;border-radius:7px"><div style="font-weight:700;color:var(--gold);margin-bottom:3px">☀️ उन्हाळी (मार्च - जून)</div><div>भाजीपाला, मूग, उडीद, तीळ, काकडी</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ PEST ALERTS ══════════════ -->
+<div class="pg" id="pg-pests">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>कीड व रोग सतर्कता</h2><span class="tag" style="background:#FEE2E2;color:#dc2626">Active Alerts</span></div>
+    <div class="main-grid">
+      <div>
+        <div style="display:flex;flex-direction:column;gap:12px" id="pestList"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card">
+          <div class="card-hd"><h3>🛡️ प्रतिबंधात्मक उपाय</h3></div>
+          <div class="card-body" style="font-size:13px;display:flex;flex-direction:column;gap:10px">
+            <div style="padding:10px;background:var(--green-l);border-radius:7px"><strong>जैविक उपाय:</strong> निंबोळी अर्क (5%) फवारणी. ट्रायकोडर्मा वापरा.</div>
+            <div style="padding:10px;background:#FFF3E8;border-radius:7px"><strong>देखरेख:</strong> पिवळे/निळे चिकट सापळे. फेरोमोन सापळे वापरा.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd"><h3>📞 कीटक नियंत्रण हेल्पलाइन</h3></div>
+          <div class="card-body" style="text-align:center;padding:20px">
+            <div style="font-size:22px;font-family:var(--font-display);font-weight:800;color:var(--green-d)">1800-180-1551</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LOAN CALCULATOR ══════════════ -->
+<div class="pg" id="pg-loans">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>कृषी कर्ज कॅल्क्युलेटर</h2><span class="tag">EMI Calculator</span></div>
+    <div class="main-grid">
+      <div class="card">
+        <div class="card-hd"><h3>🏦 कर्ज तपशील</h3></div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="fg"><label>कर्जाचा प्रकार</label>
+              <select class="fc" id="loanType" onchange="updateLoanRate()">
+                <option value="4">किसान क्रेडिट कार्ड (4%)</option>
+                <option value="7">कृषी मुदत कर्ज (7%)</option>
+                <option value="9">भूमी विकास बँक (9%)</option>
+                <option value="10.5">व्यापारी बँक कर्ज (10.5%)</option>
+              </select>
+            </div>
+            <div class="fg"><label>कर्ज रक्कम (₹)</label><input type="number" class="fc" id="loanAmt" placeholder="उदा. 100000" oninput="calcLoan()"/></div>
+          </div>
+          <div class="form-row">
+            <div class="fg"><label>कर्ज कालावधी (वर्षे)</label>
+              <select class="fc" id="loanTerm" onchange="calcLoan()">
+                <option value="1">1 वर्ष</option><option value="2">2 वर्षे</option>
+                <option value="3">3 वर्षे</option><option value="5">5 वर्षे</option>
+                <option value="7">7 वर्षे</option><option value="10">10 वर्षे</option>
+              </select>
+            </div>
+            <div class="fg"><label>व्याज दर (%)</label><input type="number" class="fc" id="loanRate" value="4" oninput="calcLoan()"/></div>
+          </div>
+          <button class="sub-btn" onclick="calcLoan()"><i class="fas fa-calculator"></i>EMI मोजा</button>
+          <div class="loan-calc" id="loanResult" style="display:none;margin-top:14px">
+            <div style="font-size:14px;font-weight:700;color:var(--green-d);margin-bottom:10px">📊 कर्ज विश्लेषण</div>
+            <div class="loan-result">
+              <div class="loan-row"><span>मासिक EMI</span><span id="lEMI" style="color:var(--saffron);font-weight:800;font-size:18px">--</span></div>
+              <div class="loan-row"><span>एकूण परतफेड</span><span id="lTotal">--</span></div>
+              <div class="loan-row"><span>व्याज रक्कम</span><span id="lInterest">--</span></div>
+              <div class="loan-row"><span>मूळ रक्कम</span><span id="lPrincipal">--</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>📋 बँक संपर्क</h3></div>
+        <div class="card-body" style="font-size:13px;display:flex;flex-direction:column;gap:8px">
+          <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 SBI Agri Loans</div><div style="font-size:12px;color:var(--gray)">1800-11-2211</div></div>
+          <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 NABARD</div><div style="font-size:12px;color:var(--gray)">1800-22-0000</div></div>
+          <div style="padding:10px;background:var(--off);border-radius:7px;border:1px solid var(--gray-l)"><div style="font-weight:700;color:var(--green-d)">🏛 Maharashtra Gramin Bank</div><div style="font-size:12px;color:var(--gray)">07162-250411</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MANDI LOCATOR ══════════════ -->
+<div class="pg" id="pg-mandi">
+  <div class="sec-wrap">
+    <div class="sec-title"><div class="bar"></div><h2>मंडी शोधा</h2><span class="tag">APMC Locator</span></div>
+    <div class="main-grid">
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-hd"><h3>🔍 मंडी शोध</h3></div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="fg"><label>जिल्हा</label>
+                <select class="fc" id="mandiDist" onchange="filterMandis()">
+                  <option value="all">सर्व जिल्हे</option>
+                  <option value="pune">पुणे</option><option value="nashik">नाशिक</option>
+                  <option value="nagpur">नागपूर</option><option value="latur">लातूर</option>
+                  <option value="aurangabad">औरंगाबाद</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mandi-list" id="mandiList"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><h3>📋 मंडी माहिती</h3></div>
+        <div class="card-body" style="font-size:13px">
+          <div style="padding:10px;background:var(--green-l);border-radius:7px;margin-bottom:8px"><strong>APMC म्हणजे काय?</strong><br>Agricultural Produce Market Committee — शेतकऱ्यांसाठी सुरक्षित व्यापार मंच</div>
+          <div style="font-size:12.5px;display:flex;flex-direction:column;gap:6px">
+            <div>✅ योग्य वजन मापन</div><div>✅ पारदर्शक किंमत निर्धारण</div>
+            <div>✅ त्वरित पेमेंट</div><div>✅ शासनमान्य व्यापारी</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SCHEME MODAL ══════════════ -->
+<div class="modal-ov" id="schModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div><h3 id="modTitle">योजना</h3><p id="modSub">कृषि योजना</p></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body"><div id="modContent"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════ CHATBOT ══════════════ -->
+<button class="chat-fab" onclick="toggleChat()">
+  <i class="fas fa-comments"></i>
+  <span class="fbadge">1</span>
+</button>
+
+<div class="chat-win" id="chatWin">
+  <div class="chat-hd">
+    <div class="chat-av">🌾</div>
+    <div class="chat-hi">
+      <h4>कृषिमित्र AI</h4>
+      <p><span class="chat-online"></span>ऑनलाइन | मराठी / English</p>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-tabs">
+    <button class="ctab act" onclick="switchTab('chat',this)">💬 चॅट</button>
+    <button class="ctab" onclick="switchTab('faq',this)">❓ FAQ</button>
+    <button class="ctab" onclick="switchTab('prices',this)">📊 भाव</button>
+  </div>
+  <div id="tab-chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="voice-status" id="voiceStatus">🎙️ ऐकत आहे... बोला</div>
+    <div class="qrs" id="quickReps">
+      <button class="qr" onclick="sqr('आजचे बाजार भाव सांगा')">📈 बाजार भाव</button>
+      <button class="qr" onclick="sqr('PM-KISAN योजना काय आहे?')">💰 PM-KISAN</button>
+      <button class="qr" onclick="sqr('सोयाबीन पिकाचा सल्ला द्या')">🌱 पिक सल्ला</button>
+      <button class="qr" onclick="sqr('पिक विमा कसा काढावा?')">🛡️ पिक विमा</button>
+    </div>
+    <div class="chat-inp-row">
+      <button class="mic-btn" id="micBtn" onclick="toggleVoice()"><i class="fas fa-microphone"></i></button>
+      <input class="chat-inp" id="chatInp" placeholder="मराठी / English मध्ये टाइप करा..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  <div id="tab-faq" style="display:none;flex:1;overflow-y:auto;padding:12px">
+    <div id="faqList"></div>
+  </div>
+  <div id="tab-prices" style="display:none;flex:1;overflow-y:auto;padding:12px">
+    <div style="font-size:12px;color:var(--gray);margin-bottom:8px">आजचे प्रमुख भाव:</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead><tr style="background:var(--green-d);color:#fff"><th style="padding:7px;text-align:left">पिक</th><th style="padding:7px;text-align:right">भाव</th><th style="padding:7px;text-align:right">बदल</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">🌿 सोयाबीन</td><td style="padding:7px;text-align:right">₹4,100</td><td style="padding:7px;text-align:right;color:#dc2626">▼ 2.1%</td></tr>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">☕ कापूस</td><td style="padding:7px;text-align:right">₹6,500</td><td style="padding:7px;text-align:right;color:#dc2626">▼ 0.8%</td></tr>
+        <tr style="border-bottom:1px solid var(--gray-l)"><td style="padding:7px">🧅 कांदा</td><td style="padding:7px;text-align:right">₹2,800</td><td style="padding:7px;text-align:right;color:#16a34a">▲ 5.3%</td></tr>
+        <tr><td style="padding:7px">🌾 गहू</td><td style="padding:7px;text-align:right">₹2,275</td><td style="padding:7px;text-align:right;color:#16a34a">▲ 1.2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <div class="ft-top">
+    <div class="fb-brand">
+      <h5>🌾 कृषिमित्र</h5>
+      <p>हवामान, माती आणि बाजारभाव यांच्यावर आधारित अचूक पिक सल्ला प्रणाली. शेतकऱ्यांसाठी, शेतकऱ्यांनी.</p>
+      <div class="fb-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div>
+      <h5>त्वरित दुवे</h5>
+      <ul>
+        <li><a href="#" onclick="goTo('advisory');return false">पिक सल्ला</a></li>
+        <li><a href="#" onclick="goTo('prices');return false">बाजार भाव</a></li>
+        <li><a href="#" onclick="goTo('policies');return false">शासन योजना</a></li>
+        <li><a href="#" onclick="goTo('soil');return false">माती माहिती</a></li>
+        <li><a href="#" onclick="goTo('pests');return false">कीड सतर्कता</a></li>
+        <li><a href="#" onclick="goTo('loans');return false">कर्ज कॅल्क्युलेटर</a></li>
+        <li><a href="#" onclick="goTo('mandi');return false">मंडी शोधा</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>महत्त्वाचे दुवे</h5>
+      <ul>
+        <li><a href="https://mahadbt.maharashtra.gov.in" target="_blank">MahaDbt Portal</a></li>
+        <li><a href="https://agmarknet.gov.in" target="_blank">Agmarknet</a></li>
+        <li><a href="https://pmfby.gov.in" target="_blank">PM Fasal Bima</a></li>
+        <li><a href="https://pmkisan.gov.in" target="_blank">PM-KISAN</a></li>
+        <li><a href="https://enam.gov.in" target="_blank">e-NAM</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>संपर्क</h5>
+      <ul>
+        <li><a href="mailto:your@email.com">📧 your@email.com</a></li>
+        <li><a href="tel:18001801551">📞 1800-180-1551</a></li>
+        <li><a href="#">📍 पुणे, महाराष्ट्र</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <div class="inner">
+      <div>© <span id="fyear"></span> कृषिमित्र | Smart Farmer Portal | Developed by Vedant Thorat</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5)">Made with ❤️ for Maharashtra Farmers</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
